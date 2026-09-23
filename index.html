@@ -252,8 +252,9 @@ table.list{border-collapse:collapse;width:100%;min-width:620px}
   .week col.c-staff{width:150px}
 }
 /* icons + today + agenda (all widths) */
-.tab .ico{display:none;position:relative}
-.tab .ico svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block}
+.tab .ico{display:inline-flex;position:relative;order:2}
+.tab .ico svg{display:none}
+.tab .ico svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .tab>.ico+span{display:inline}
 .tabs .badge{margin-left:2px}
 .today-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;align-items:start}
@@ -303,7 +304,8 @@ table.list{border-collapse:collapse;width:100%;min-width:620px}
   .brand .today{display:none}
   .tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);border-bottom:0;border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom, 0px));gap:0;justify-content:space-around;overflow:visible}
   .tab{flex:1;flex-direction:column;gap:3px;padding:6px 2px;font-size:11px;border-bottom:0;margin:0;color:var(--ink-3)}
-  .tab .ico{display:block}
+  .tab .ico{display:block;order:0}
+  .tab .ico svg{display:block}
   .tab[aria-selected="true"]{color:var(--accent)}
   .tabs .badge{position:absolute;top:-5px;right:-11px;margin:0;border:2px solid var(--surface);height:20px}
   .toolbar .label{font-size:18px;width:auto;order:0;flex:1;text-align:center;margin:0}
@@ -346,7 +348,8 @@ table.list{border-collapse:collapse;width:100%;min-width:620px}
 .linkbtn{appearance:none;border:0;background:none;color:var(--accent);font-weight:600;cursor:pointer;padding:4px 0;font-size:14px}
 .gmark{width:18px;height:18px}
 .access{display:flex;flex-direction:column}
-.access .row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.access .row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.access .who{min-width:140px}
 .access .row:first-of-type{border-top:0}
 .access img{width:32px;height:32px;border-radius:50%}
 .access .who{flex:1;min-width:0}
@@ -388,6 +391,23 @@ table.list{border-collapse:collapse;width:100%;min-width:620px}
   </div>
 </div>
 
+<div class="auth" id="pending" hidden>
+  <div class="auth-card">
+    <img class="logo" src="icon-192.png" alt="">
+    <div><h1 id="p-title">Waiting for approval</h1><p class="muted" style="margin:4px 0 0" id="p-text">An administrator has to approve your account before you can see the schedule and messages. You'll get in automatically as soon as they do.</p></div>
+    <div id="p-setup" hidden class="notice info" style="flex-direction:column;align-items:stretch">
+      <span><b>This app has no administrator yet.</b> If you run the team, become the administrator. You'll approve everyone else.</span>
+      <button class="btn primary" type="button" id="p-claim">Become administrator</button>
+    </div>
+    <div class="field"><label for="p-name">Your name (what the team sees)</label><input id="p-name" maxlength="60" autocomplete="name"></div>
+    <div class="muted" id="p-email"></div>
+    <div class="actions" style="justify-content:space-between">
+      <button class="btn danger" type="button" id="p-out">Sign out</button>
+      <button class="btn primary" type="button" id="p-save">Save name</button>
+    </div>
+  </div>
+</div>
+
 <div class="app" id="app" hidden>
   <header class="top">
     <div class="brand"><h1>Jornada</h1><span class="today" id="today"></span></div>
@@ -399,7 +419,7 @@ table.list{border-collapse:collapse;width:100%;min-width:620px}
     <button class="tab" role="tab" data-view="schedule" id="tab-schedule"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg></span><span>Schedule</span></button>
     <button class="tab" role="tab" data-view="briefing" id="tab-briefing"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14.5 3v4.5H19M9 12h7M9 16h5"/></svg></span><span>Briefing</span></button>
     <button class="tab" role="tab" data-view="messages" id="tab-messages"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><span class="badge" id="unread" hidden>0</span></span><span>Messages</span></button>
-    <button class="tab" role="tab" data-view="team" id="tab-team"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.8a3.3 3.3 0 0 1 0 6.4M18 14.8c2 .7 3.2 2.4 3.5 5.2"/></svg></span><span>Team</span></button>
+    <button class="tab" role="tab" data-view="team" id="tab-team"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.8a3.3 3.3 0 0 1 0 6.4M18 14.8c2 .7 3.2 2.4 3.5 5.2"/></svg><span class="badge" id="reqs" hidden>0</span></span><span>Team</span></button>
   </nav>
   <div id="banner"></div>
   <main id="view"></main>
@@ -503,7 +523,7 @@ const S = {
   staff: [], shifts: [], briefing: null, channels: [], messages: [],
   channel: lsGet("jornada-channel") || "general",
   user: null, me: null, canEdit: false, canWrite: null, live: true, readonly: false, ready: false,
-  users: {}, adminIds: new Set(), setup: undefined, dms: []
+  users: {}, adminIds: new Set(), setup: undefined, dms: [], members: [], memberIds: new Set()
 };
 const mq = matchMedia("(max-width: 700px)");
 let narrow = mq.matches;
@@ -576,9 +596,11 @@ function renderShell() {
   if (S.me) { acct.hidden = false; $("#acct-img").src = avatarFor(S.me.id); $("#acct-img").referrerPolicy = "no-referrer"; }
   document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.view === S.view)));
   const banner = $("#banner"); banner.replaceChildren();
-  if (S.ready && S.setup === null) banner.append(h("div", { class: "notice info" },
-    h("span", { style: "flex:1;min-width:220px" }, h("b", null, "This app has no administrator yet. "), "If you run the team, tap the button: you'll become the main manager and can give permissions to others."),
-    h("button", { class: "btn primary", onclick: claimOwner }, "Become administrator")));
+  const pend = pendingUsers();
+  if (S.ready && S.canEdit && pend.length && S.view !== "team") banner.append(h("div", { class: "notice info" },
+    h("span", { style: "flex:1;min-width:200px" }, h("b", null, pend.length === 1 ? "1 person is" : pend.length + " people are"), " waiting for your approval to join the team."),
+    h("button", { class: "btn primary", onclick: () => go("team") }, "Review")));
+  const rb = $("#reqs"); rb.hidden = !(S.canEdit && pend.length); rb.textContent = pend.length;
   updateUnread();
 }
 function updateUnread() {
@@ -628,7 +650,7 @@ function viewSchedule() {
   wrap.append(tb);
   if (!S.staff.length && S.ready) wrap.append(h("div", { class: "notice info" },
     "There's nobody on the team yet. ",
-    mayEditSchedule() ? h("button", { class: "btn", onclick: () => openStaff({}) }, "Add person") : "Ask a manager to add the team."));
+    mayEditSchedule() ? h("button", { class: "btn", onclick: () => go("team") }, "Go to Team") : "Ask a manager to approve the team."));
   wrap.append(S.mode === "week" ? weekGrid(days) : dayTimeline(S.date));
   return wrap;
 }
@@ -688,8 +710,8 @@ function viewToday() {
     nextCard = h("div", { class: "panel" }, h("h3", null, "Your next shift"), h("p", { class: "muted", style: "margin:0" }, "You have no upcoming shifts."));
   } else if (S.live) {
     nextCard = h("div", { class: "panel" }, h("h3", null, "Your shifts"), h("p", { class: "muted", style: "margin:0 0 10px" },
-      S.canEdit ? "Link your account to your profile in Team to see your upcoming shifts here." : "Ask your manager to link your account in Team to see your upcoming shifts here."),
-      S.canEdit ? h("button", { class: "btn", onclick: () => go("team") }, "Go to Team") : null);
+      "Your upcoming shifts will show up here."),
+      null);
   }
   const working = todayShifts.slice().sort((a, b) => mins(a.start) - mins(b.start));
   const unread = visibleChannels().filter(isUnread);
@@ -1115,7 +1137,7 @@ function openNewDM() {
   const hits = h("div", { class: "hits" });
   const run = () => {
     const v = q.value.trim().toLowerCase();
-    const res = Object.entries(S.users).filter(([id, u]) => id !== S.me.id && (!v || (u.name || "").toLowerCase().includes(v) || (u.email || "").toLowerCase().includes(v)))
+    const res = Object.entries(S.users).filter(([id, u]) => id !== S.me.id && S.memberIds.has(id) && (!v || (u.name || "").toLowerCase().includes(v) || (u.email || "").toLowerCase().includes(v)))
       .sort((a, b) => (a[1].name || "").localeCompare(b[1].name || "", "en")).slice(0, 30);
     hits.replaceChildren(...(res.length ? res.map(([id, u]) => h("button", { onclick: () => start(id) }, h("img", { alt: "", src: avatarFor(id), referrerpolicy: "no-referrer" }), h("span", { text: u.name || u.email || "No name" }))) :
       [h("div", { class: "muted", style: "padding:8px 10px" }, Object.keys(S.users).length > 1 ? "No results" : "Nobody else yet. Your coworkers show up here after they sign in for the first time.")]));
@@ -1137,112 +1159,101 @@ function openNewDM() {
 }
 
 /* ---------- EQUIPO ---------- */
+function pendingUsers() {
+  if (!S.canEdit) return [];
+  return Object.entries(S.users).filter(([id]) => !S.memberIds.has(id) && !S.adminIds.has(id))
+    .sort((a, b) => (b[1].lastSeen || 0) - (a[1].lastSeen || 0));
+}
+function rebuildStaff() {
+  S.staff = S.members.map(m => ({ id: m.id, userId: m.id, name: nameOf(m.id) || "No name", role: m.role || "", color: m.color || hashColor(m.id), contractHours: m.contractHours ?? null }));
+}
+function roleLabel(id) { return S.setup && S.setup.owner === id ? "Administrator" : S.adminIds.has(id) ? "Manager" : "Team"; }
 function viewTeam() {
   const ed = mayEditSchedule();
   const hoursBy = {};
   for (const s of S.shifts) hoursBy[s.staffId] = (hoursBy[s.staffId] || 0) + shiftHours(s);
   const mon = mondayOf(S.date);
-  const hasExamples = S.staff.some(p => p.example);
-  if (narrow) return h("section", { style: "display:flex;flex-direction:column;gap:12px" },
-    h("div", { class: "toolbar" }, h("span", { class: "label", style: "text-align:left" }, `${S.staff.length} ${S.staff.length === 1 ? "person" : "people"}`), ed ? h("button", { class: "btn primary", onclick: () => openStaff({}) }, "+ Person") : null),
-    hasExamples && ed ? exampleNotice() : null,
-    h("p", { class: "muted", style: "margin:0" }, `Hours planned for the week of ${parse(mon).getDate()} ${fmtDay(mon, { month: "short" })}`),
-    h("div", { class: "tcards" }, sortedStaff().map(p => {
-      const hrs = hoursBy[p.id] || 0, c = +p.contractHours || 0, over = c && hrs > c;
-      return h("button", { class: "tcard", disabled: !ed ? true : null, style: ed ? null : "cursor:default", onclick: ed ? () => openStaff(p) : null },
-        staffRowHead(p),
-        h("div", { class: "num" }, fmtH(hrs), c ? h("div", { class: "meter" + (over ? " over" : ""), style: "width:70px;margin-left:auto" }, h("i", { style: `width:${Math.min(100, hrs / c * 100)}%` })) : null,
-          c ? h("div", { style: "font-size:11px;color:var(--ink-3)" }, "of " + c + " h") : null));
-    })),
-    ed ? accessPanel() : h("p", { class: "muted" }, "Only managers can change the team and shifts."));
-  return h("section", { style: "display:flex;flex-direction:column;gap:12px" },
-    h("div", { class: "toolbar" },
-      h("span", { class: "label" }, `${S.staff.length} ${S.staff.length === 1 ? "person" : "people"}`),
-      h("span", { class: "muted" }, `Hours for the week of ${parse(mon).getDate()} ${fmtDay(mon, { month: "short" })}`),
-      h("span", { class: "spacer" }),
-      ed ? h("button", { class: "btn primary", onclick: () => openStaff({}) }, "+ Person") : null),
-    hasExamples && ed ? exampleNotice() : null,
-    h("div", { class: "team" }, h("table", { class: "list" },
-      h("thead", null, h("tr", null, h("th", null, "Name"), h("th", null, "Position"), h("th", null, "Account"), h("th", null, "This week"), h("th", null, "Contract"))),
-      h("tbody", null, sortedStaff().map(p => {
-        const hrs = hoursBy[p.id] || 0, c = +p.contractHours || 0, over = c && hrs > c;
-        return h("tr", { class: ed ? "clickable" : null, onclick: ed ? () => openStaff(p) : null, tabindex: ed ? "0" : null, onkeydown: ed ? e => { if (e.key === "Enter") openStaff(p); } : null },
-          h("td", null, staffRowHead(p)),
-          h("td", { text: p.role || "—" }),
-          h("td", null, p.userId ? h("span", { "data-uid": p.userId, "data-fallback": "Linked" }) : h("span", { class: "muted" }, "—")),
-          h("td", { class: "num" }, fmtH(hrs), c ? h("div", { class: "meter" + (over ? " over" : "") }, h("i", { style: `width:${Math.min(100, hrs / c * 100)}%` })) : null),
-          h("td", { class: "num" }, c ? c + " h" : "—"));
-      })))),
-    ed ? accessPanel() : h("p", { class: "muted" }, "Only managers can change the team and shifts."));
-}
-function accessPanel() {
-  const owner = S.setup && S.setup.owner;
-  const rows = Object.entries(S.users).sort((a, b) => (a[1].name || "").localeCompare(b[1].name || "", "en"));
-  return h("div", { class: "panel access" },
-    h("h3", null, "App access", h("small", null, rows.length + (rows.length === 1 ? " account" : " accounts"))),
-    h("p", { class: "muted", style: "margin:0 0 6px" }, "Everyone who has signed in to the app appears here. Managers can change the schedule, team and briefing; everyone else can view them and use messages."),
-    rows.map(([id, u]) => {
-      const adm = S.adminIds.has(id), isOwner = id === owner, isMe = id === S.me.id;
-      const b = !isOwner ? h("button", { class: "btn" + (adm ? " ghost" : "") }, adm ? "Remove manager" : "Make manager") : null;
-      if (b) b.onclick = async () => {
-        if (adm && isMe && !b.classList.contains("armed")) { b.classList.add("danger", "armed"); b.textContent = "Remove yourself? Confirm"; return; }
-        b.disabled = true;
-        await safe(adm ? store.del("admins/" + id) : store.set("admins/" + id, { since: Date.now(), by: S.me.id }), adm ? "No longer a manager" : "Now a manager");
+  const pend = pendingUsers();
+  const reqPanel = ed && pend.length ? h("div", { class: "panel access" },
+    h("h3", null, "Waiting for approval", h("small", null, String(pend.length))),
+    h("p", { class: "muted", style: "margin:0 0 6px" }, "These people signed in and want to join. Approve only people you know."),
+    pend.map(([id, u]) => {
+      const ok = h("button", { class: "btn primary" }, "Approve");
+      const no = h("button", { class: "btn ghost" }, "Decline");
+      ok.onclick = async () => { ok.disabled = no.disabled = true; await safe(store.set("members/" + id, { since: Date.now(), by: S.me.id, color: PALETTE[S.members.length % PALETTE.length] }), (u.name || "They") + " joined the team"); };
+      no.onclick = async () => {
+        if (!no.classList.contains("armed")) { no.classList.add("danger", "armed"); no.textContent = "Decline? Confirm"; return; }
+        ok.disabled = no.disabled = true; await safe(store.del("users/" + id), "Request declined");
       };
       return h("div", { class: "row" }, h("img", { alt: "", src: avatarFor(id), referrerpolicy: "no-referrer" }),
-        h("div", { class: "who" }, h("div", { style: "font-weight:600", text: (u.name || "No name") + (isMe ? " (you)" : "") }), h("div", { class: "muted", text: u.email || "" })),
-        h("span", { class: "pill" + (adm ? " admin" : "") }, isOwner ? "Administrator" : adm ? "Manager" : "Team"), b);
-    }));
+        h("div", { class: "who" }, h("div", { style: "font-weight:600", text: u.name || "No name" }), h("div", { class: "muted", text: u.email || "" })),
+        h("div", { style: "display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end" }, no, ok));
+    })) : null;
+  const pill = id => h("span", { class: "pill" + (S.adminIds.has(id) ? " admin" : "") }, roleLabel(id));
+  const meter = (hrs, c, w) => c ? h("div", { class: "meter" + (hrs > c ? " over" : ""), style: w ? `width:${w}px;margin-left:auto` : null }, h("i", { style: `width:${Math.min(100, hrs / c * 100)}%` })) : null;
+  const head = h("div", { class: "toolbar" },
+    h("span", { class: "label", style: narrow ? "text-align:left" : null }, `${S.staff.length} ${S.staff.length === 1 ? "person" : "people"}`),
+    narrow ? null : h("span", { class: "muted" }, `Hours for the week of ${parse(mon).getDate()} ${fmtDay(mon, { month: "short" })}`));
+  const foot = ed ? h("p", { class: "muted" }, "New people join by creating an account in the app. They show up above for you to approve. Tap a person to set their position, hours and role.")
+                  : h("p", { class: "muted" }, "Only managers can change the team and shifts.");
+  if (narrow) return h("section", { style: "display:flex;flex-direction:column;gap:12px" },
+    reqPanel, head,
+    h("p", { class: "muted", style: "margin:0" }, `Hours planned for the week of ${parse(mon).getDate()} ${fmtDay(mon, { month: "short" })}`),
+    h("div", { class: "tcards" }, sortedStaff().map(p => {
+      const hrs = hoursBy[p.id] || 0, c = +p.contractHours || 0;
+      return h("button", { class: "tcard", disabled: !ed ? true : null, style: ed ? null : "cursor:default", onclick: ed ? () => openMember(p) : null },
+        staffRowHead(p),
+        h("div", { class: "num" }, fmtH(hrs), meter(hrs, c, 70), c ? h("div", { style: "font-size:11px;color:var(--ink-3)" }, "of " + c + " h") : null));
+    })), foot);
+  return h("section", { style: "display:flex;flex-direction:column;gap:12px" },
+    reqPanel, head,
+    h("div", { class: "team" }, h("table", { class: "list" },
+      h("thead", null, h("tr", null, h("th", null, "Name"), h("th", null, "Position"), h("th", null, "Role"), h("th", null, "This week"), h("th", null, "Contract"))),
+      h("tbody", null, sortedStaff().map(p => {
+        const hrs = hoursBy[p.id] || 0, c = +p.contractHours || 0;
+        return h("tr", { class: ed ? "clickable" : null, onclick: ed ? () => openMember(p) : null, tabindex: ed ? "0" : null, onkeydown: ed ? e => { if (e.key === "Enter") openMember(p); } : null },
+          h("td", null, staffRowHead(p)),
+          h("td", { text: p.role || "—" }),
+          h("td", null, pill(p.id)),
+          h("td", { class: "num" }, fmtH(hrs), meter(hrs, c)),
+          h("td", { class: "num" }, c ? c + " h" : "—"));
+      })))), foot);
 }
-function exampleNotice() {
-  const b = h("button", { class: "btn" }, "Delete example data");
-  b.onclick = async () => {
-    if (!b.classList.contains("armed")) { b.classList.add("danger", "armed"); b.textContent = "Delete all example data? Confirm"; return; }
-    b.disabled = true; b.textContent = "Deleting…";
-    for (const coll of ["shifts", "staff", "briefings", "messages"]) {
-      const rows = await store.get(coll, { where: [["example", "==", true]], limit: 1000 });
-      for (const r of rows) await safe(store.del(coll + "/" + r.id));
-    }
-    toast("Example data deleted");
-  };
-  return h("div", { class: "notice" }, "The team, shifts, briefing and welcome message are examples. Replace them with your real team.", h("span", { class: "spacer", style: "flex:1" }), b);
-}
-function openStaff(p) {
-  const isNew = !p.id;
+function openMember(p) {
+  const id = p.id, u = S.users[id] || {}, isOwner = S.setup && S.setup.owner === id, isMe = id === S.me.id;
   const f = {
-    name: h("input", { id: "s-name", value: p.name || "", placeholder: "First and last name", maxlength: "60" }),
     role: h("input", { id: "s-role", value: p.role || "", placeholder: "Waiter, Cook, Supervisor…", maxlength: "40" }),
     hours: h("input", { id: "s-hours", type: "number", min: "0", max: "80", value: p.contractHours ?? "", placeholder: "40" })
   };
-  let color = p.color || PALETTE[S.staff.length % PALETTE.length];
+  let color = p.color;
   const sw = h("div", { class: "swatches" }, PALETTE.map(c => { const b = h("button", { type: "button", style: `--c:${c}`, "aria-label": "Color", "aria-pressed": String(c === color) }); b.onclick = () => { color = c; sw.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); }; return b; }));
-  const linkSel = h("select", { id: "s-link" }, h("option", { value: "" }, "Not linked"),
-    Object.entries(S.users).sort((a, b) => (a[1].name || "").localeCompare(b[1].name || "", "en"))
-      .map(([id, u]) => h("option", { value: id }, (u.name || "No name") + (u.email ? " · " + u.email : ""))));
-  linkSel.value = p.userId && S.users[p.userId] ? p.userId : "";
-  const linkBox = h("div", { class: "field" }, h("label", { for: "s-link" }, "App account (so they see “You” and their shifts in Today)"), linkSel,
-    h("span", { class: "muted" }, "If they're not listed, ask them to sign in to the app once."));
+  const mgr = h("input", { type: "checkbox", id: "s-mgr", checked: S.adminIds.has(id), disabled: isOwner || isMe });
   const save = async () => {
-    const name = f.name.value.trim(); if (!name) { toast("Type the name."); return; }
-    const data = { name, role: f.role.value.trim(), contractHours: f.hours.value ? +f.hours.value : null, color, userId: linkSel.value || null };
     close();
-    if (isNew) await safe(store.add("staff", data), "Person added");
-    else { const { id, ...rest } = p; await safe(store.set("staff/" + p.id, { ...rest, ...data }), "Changes saved"); }
+    const ok = await safe(store.merge("members/" + id, { role: f.role.value.trim(), contractHours: f.hours.value ? +f.hours.value : null, color }));
+    if (!isOwner && !isMe && mgr.checked !== S.adminIds.has(id))
+      await safe(mgr.checked ? store.set("admins/" + id, { since: Date.now(), by: S.me.id }) : store.del("admins/" + id));
+    if (ok) toast("Changes saved");
   };
-  const del = h("button", { class: "btn danger left" }, "Delete");
-  del.onclick = async () => {
-    if (!del.classList.contains("armed")) { del.classList.add("armed"); del.textContent = "Delete? Their shifts become open"; return; }
-    close(); await safe(store.del("staff/" + p.id), "Person deleted");
+  const rm = h("button", { class: "btn danger left" }, "Remove from team");
+  rm.onclick = async () => {
+    if (!rm.classList.contains("armed")) { rm.classList.add("armed"); rm.textContent = "Remove? They'll need approval again"; return; }
+    close();
+    const b = writeBatch(fb.db);
+    b.delete(doc(fb.db, "admins/" + id)); b.delete(doc(fb.db, "members/" + id));
+    await safe(b.commit(), (p.name || "They") + " was removed from the team");
   };
   const close = modal(h("div", { class: "modal", role: "dialog", "aria-modal": "true" },
-    h("h2", null, isNew ? "Add person" : "Edit person"),
-    h("div", { class: "field" }, h("label", { for: "s-name" }, "Name"), f.name),
+    h("div", { style: "display:flex;gap:12px;align-items:center" }, h("img", { alt: "", src: avatarFor(id), referrerpolicy: "no-referrer", style: "width:48px;height:48px;border-radius:50%" }),
+      h("div", { style: "min-width:0" }, h("h2", { text: p.name || "No name" }), h("div", { class: "muted", text: u.email || "" }))),
+    h("p", { class: "muted", style: "margin:0" }, "The name is chosen by the person in their own account."),
     h("div", { class: "row2" },
       h("div", { class: "field" }, h("label", { for: "s-role" }, "Usual position"), f.role),
       h("div", { class: "field" }, h("label", { for: "s-hours" }, "Contract hours / week"), f.hours)),
     h("div", { class: "field" }, h("label", null, "Color in the schedule"), sw),
-    linkBox,
-    h("div", { class: "actions" }, !isNew ? del : null, h("button", { class: "btn ghost", onclick: () => close() }, "Cancel"), h("button", { class: "btn primary", onclick: save }, "Save"))));
+    h("label", { class: "linked", for: "s-mgr", style: "cursor:pointer" }, mgr,
+      h("span", null, h("b", null, "Manager"), h("span", { class: "muted" }, isOwner ? " — the administrator is always a manager" : isMe ? " — you can't change your own role" : " — can change the schedule, team and briefing"))),
+    h("div", { class: "actions" }, !isOwner && !isMe ? rm : null, h("button", { class: "btn ghost", onclick: () => close() }, "Cancel"), h("button", { class: "btn primary", onclick: save }, "Save"))));
 }
 
 /* ---------- nav + boot ---------- */
@@ -1270,7 +1281,8 @@ $("#acct").addEventListener("click", () => {
 async function claimOwner() {
   const b = writeBatch(fb.db);
   b.set(doc(fb.db, "admins/" + S.me.id), { since: Date.now(), by: S.me.id });
-  b.set(doc(fb.db, "meta/setup"), { owner: S.me.id, at: Date.now() });
+  b.set(doc(fb.db, "members/" + S.me.id), { since: Date.now(), by: S.me.id, color: PALETTE[0] });
+  b.set(doc(fb.db, "meta/setup"), { owner: S.me.id, at: Date.now(), v: 2 });
   await safe(b.commit(), "You're now the administrator");
 }
 
@@ -1328,26 +1340,82 @@ function showAuth() {
     $("#a-submit").disabled = false;
   };
 }
-let pendingName = null, started = null;
+let pendingName = null, started = null, fullStarted = false;
 async function startApp(u) {
   if (started && started !== u.uid) { location.reload(); return; }
   if (started) return;
   started = u.uid;
-  $("#boot").hidden = true; $("#auth").hidden = true; $("#app").hidden = false;
   const name = pendingName || u.displayName || (u.email || "").split("@")[0] || "No name";
   S.me = { id: u.uid, name, email: u.email || "", isOwner: false, canEdit: false };
   S.users[u.uid] = { name, email: u.email || "", photo: u.photoURL || null };
+  const mine = await getDoc(doc(fb.db, "users/" + u.uid)).then(d => d.exists() ? d.data() : null).catch(() => null);
+  const myName = (mine && mine.name && !pendingName) ? mine.name : name;
+  S.users[u.uid].name = myName; S.me.name = myName;
+  await store.merge("users/" + u.uid, { name: myName, email: u.email || null, photo: u.photoURL || null, lastSeen: Date.now() }).catch(e => console.warn(e));
+  // access = approved member or manager
+  let isMem, isAdm, gotSetup = false;
+  const decide = () => {
+    if (isMem === undefined || isAdm === undefined || !gotSetup) return;
+    const ok = isMem || isAdm;
+    if (ok && !fullStarted) startFull(u);
+    else if (!ok && fullStarted) location.reload();
+    else if (!ok) showPending();
+  };
+  store.subDoc("members/" + u.uid, d => { isMem = !!d; decide(); });
+  store.subDoc("admins/" + u.uid, d => { isAdm = !!d; decide(); });
+  store.subDoc("meta/setup", d => { S.setup = d; gotSetup = true; if (fullStarted) renderShell(); else decide(); if (!fullStarted && isMem === false && isAdm === false) showPending(); });
+}
+function showPending() {
+  $("#boot").hidden = true; $("#auth").hidden = true; $("#app").hidden = true; $("#pending").hidden = false;
+  const noSetup = S.setup === null;
+  $("#p-setup").hidden = !noSetup;
+  $("#p-title").textContent = noSetup ? "Welcome to Jornada" : "Waiting for approval";
+  $("#p-text").hidden = noSetup;
+  const nm = $("#p-name"); if (document.activeElement !== nm) nm.value = S.me.name || "";
+  $("#p-email").textContent = S.me.email ? "Signed in as " + S.me.email : "";
+  $("#p-out").onclick = async () => { await signOut(fb.auth); location.reload(); };
+  $("#p-save").onclick = async () => {
+    const v = nm.value.trim(); if (!v) { toast("Type your name."); return; }
+    S.me.name = v; try { await updateProfile(fb.auth.currentUser, { displayName: v }); } catch {}
+    await safe(store.merge("users/" + S.me.id, { name: v }), "Name saved");
+  };
+  $("#p-claim").onclick = claimOwner;
+}
+function startFull(u) {
+  fullStarted = true;
+  $("#boot").hidden = true; $("#auth").hidden = true; $("#pending").hidden = true; $("#app").hidden = false;
   S.canWrite = true; S.ready = true;
   render();
-  const mine = await getDoc(doc(fb.db, "users/" + u.uid)).then(d => d.exists() ? d.data() : null).catch(() => null);
-  store.merge("users/" + u.uid, { name: (mine && mine.name && !pendingName) ? mine.name : name, email: u.email || null, photo: u.photoURL || null, lastSeen: Date.now() }).catch(() => {});
-  store.sub("users", {}, rows => { S.users = Object.fromEntries(rows.map(r => [r.id, r])); refresh(); });
-  store.sub("admins", {}, rows => { S.adminIds = new Set(rows.map(r => r.id)); const was = S.canEdit; S.canEdit = S.adminIds.has(u.uid); if (was !== S.canEdit) render(); else refresh(); });
-  store.subDoc("meta/setup", d => { S.setup = d; renderShell(); });
-  store.sub("staff", {}, rows => { S.staff = rows; subscribeMine(); refresh(); });
+  store.sub("users", {}, rows => { S.users = Object.fromEntries(rows.map(r => [r.id, r])); rebuildStaff(); refresh(); });
+  store.sub("admins", {}, rows => { S.adminIds = new Set(rows.map(r => r.id)); const was = S.canEdit; S.canEdit = S.adminIds.has(u.uid); if (S.canEdit && !was) migrate(); if (was !== S.canEdit) render(); else refresh(); });
+  store.sub("members", {}, rows => { S.members = rows; S.memberIds = new Set(rows.map(r => r.id)); rebuildStaff(); subscribeMine(); refresh(); });
   store.sub("channels", {}, rows => { S.channels = rows; refresh("chans"); });
   store.sub("dms", { where: [["members", "array-contains", u.uid]] }, rows => { S.dms = rows; refresh("chans"); });
   subscribeToday(); subscribeWeek(); subscribeBrief(); subscribeMsgs();
+}
+/* one-time move from the old "staff cards" to approved accounts */
+let migrating = false;
+async function migrate() {
+  if (migrating || !S.setup || S.setup.v >= 2) return;
+  migrating = true;
+  try {
+    const [staff, shifts, admins] = await Promise.all([store.get("staff", {}), store.get("shifts", { limit: 1000 }), store.get("admins", {})]);
+    const ops = [], map = {};
+    for (const p of staff) {
+      if (p.userId) { map[p.id] = p.userId; ops.push(["set", "members/" + p.userId, { role: p.role || "", contractHours: p.contractHours ?? null, color: p.color || PALETTE[0], since: Date.now(), by: S.me.id }]); }
+      else map[p.id] = "";
+      ops.push(["del", "staff/" + p.id]);
+    }
+    for (const a of admins) if (!staff.some(p => p.userId === a.id)) ops.push(["set", "members/" + a.id, { since: Date.now(), by: S.me.id }]);
+    for (const sh of shifts) if (sh.staffId && sh.staffId in map) ops.push(["set", "shifts/" + sh.id, { staffId: map[sh.staffId] }]);
+    ops.push(["set", "meta/setup", { v: 2 }]);
+    for (let i = 0; i < ops.length; i += 400) {
+      const b = writeBatch(fb.db);
+      for (const [op, path, data] of ops.slice(i, i + 400)) op === "del" ? b.delete(doc(fb.db, path)) : b.set(doc(fb.db, path), data, { merge: true });
+      await b.commit();
+    }
+  } catch (e) { console.warn("migration", e); }
+  migrating = false;
 }
 
 const cfgOk = firebaseConfig && firebaseConfig.apiKey && !/PEGA|TU_/.test(firebaseConfig.apiKey);

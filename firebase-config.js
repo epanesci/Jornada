@@ -1,10 +1,10 @@
-// Pega aquí los datos de tu proyecto de Firebase (paso 1 de LEEME.md).
+// Datos de tu proyecto de Firebase (jornada-15b6d).
 // Estos datos no son secretos: es normal que estén en la web.
 export const firebaseConfig = {
-  apiKey: "PEGA_AQUI_TU_API_KEY",
-  authDomain: "tu-proyecto.firebaseapp.com",
-  projectId: "tu-proyecto",
-  storageBucket: "tu-proyecto.appspot.com",
-  messagingSenderId: "000000000000",
-  appId: "1:000000000000:web:0000000000000000"
+  apiKey: "AIzaSyARVOjqOB4Msq8lFO_AdjZspOk6-MwlXpA",
+  authDomain: "jornada-15b6d.firebaseapp.com",
+  projectId: "jornada-15b6d",
+  storageBucket: "jornada-15b6d.firebasestorage.app",
+  messagingSenderId: "310414567952",
+  appId: "1:310414567952:web:fb347af3ad1660e1a0f895"
 };

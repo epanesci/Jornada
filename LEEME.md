@@ -65,11 +65,10 @@ Sin este paso, el inicio de sesión dará error.
 ## Paso 5: primer uso (hazlo tú antes que nadie)
 
 1. Abre tu dirección de Netlify.
-2. Pulsa **Crear cuenta**, o entra con Google.
-3. Arriba aparecerá **"Esta app aún no tiene administrador"**. Pulsa **Ser el administrador**.
+2. Pulsa **Create account**, o entra con Google.
+3. Aparecerá **"Welcome to Jornada"**. Pulsa **Become administrator**.
 
    La primera persona que pulse ese botón queda como administrador principal para siempre, así que hazlo tú primero.
-4. Ve a **Equipo → + Persona** y añade a tu gente. En tu propia ficha, en "Cuenta en la app", elige tu cuenta. Así verás tus turnos en la pantalla Hoy.
 
 ---
 
@@ -87,12 +86,27 @@ En iPhone, si "Entrar con Google" falla dentro de la app instalada, usa correo y
 ## Paso 7: invitar al equipo
 
 1. Envía la dirección web a tus compañeros por WhatsApp o correo.
-2. Cada uno crea su cuenta.
-3. En **Equipo**:
-   - Abre la ficha de cada persona y, en **"Cuenta en la app"**, elige su cuenta. Así cada uno ve "Tú" y sus turnos.
-   - En **Accesos a la app**, pulsa **Hacer gestor** a quien deba poder cambiar horarios y el briefing. El resto solo puede verlos y usar los mensajes.
+2. Cada uno crea su cuenta y elige su nombre. Verán **"Waiting for approval"** hasta que los apruebes.
+3. Tú verás un aviso y un número en **Team**. Pulsa **Approve** a quien conozcas y **Decline** a quien no.
+4. Toca a cada persona en **Team** para poner su puesto, sus horas de contrato y su color, y marca **Manager** si debe poder cambiar horarios y el briefing.
+5. Si alguien deja el trabajo, tócalo y pulsa **Remove from team**. Si vuelve a entrar, tendrás que aprobarlo otra vez.
 
 ---
+
+## Fichaje (check in / check out)
+
+- **Empleados:** en **My shifts** pulsan **Check in** al empezar y **Check out** al terminar (hay que tocar dos veces para salir, así se evitan los toques sin querer). Se puede fichar desde 15 minutos antes del turno. Sin internet no se puede fichar, y la app lo dice: nunca se guarda una hora "a medias".
+- **La hora la pone el servidor de Firebase**, no el móvil. Cambiar la hora del celular no sirve.
+- **El empleado no puede editar ni borrar sus registros.** Lo bloquean las reglas de Firebase.
+- **Cambio de hora:** en la noche del cambio se paga lo más favorable para el empleado: si el reloj marca 8 h pero pasaron 9 reales, se pagan 9; si pasaron 7 reales, se pagan 8.
+- **Descanso:** se descuentan los minutos de pausa del turno planificado (30 por defecto). El gestor puede cambiarlo en cada registro; 0 = sin descuento.
+- **Gestores:** pestaña **Hours**. Lo raro sale en rojo: salidas olvidadas, fichajes sin turno, entradas muy tempranas, más de 12 horas... Toca un registro para corregirlo (el motivo es obligatorio y queda en el historial). **Approve** aprueba; "Approve … without issues" aprueba de una vez lo que no tiene nada raro.
+- Los registros nunca se borran: **Remove record** los marca como eliminados, con el motivo, y dejan de contar.
+- **Export to Excel** descarga la semana para las nóminas.
+
+## Copias de seguridad (recomendado con el fichaje)
+
+El plan gratis de Firebase no hace copias automáticas. Como el fichaje implica sueldos, conviene pasar al plan **Blaze** (pago por uso, con un equipo pequeño cuesta muy poco) y activar las copias diarias de Firestore. Además, exporta cada semana el Excel de horas y guárdalo.
 
 ## Hacer cambios más adelante
 

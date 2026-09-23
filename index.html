@@ -296,6 +296,46 @@ table.list{border-collapse:collapse;width:100%;min-width:620px}
 .tcard .person{flex:1;min-width:0}
 .tcard .num{font-family:var(--f-mono);font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
 .back{display:none}
+.clock{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px}
+.clock.on{background:var(--accent-soft);border-color:transparent}
+.clock-info{min-width:0;flex:1}
+.clock-state{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);display:flex;align-items:center;gap:6px}
+.clock.on .clock-state{color:var(--accent)}
+.clock-state .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+.clock-big{font-family:var(--f-mono);font-size:26px;font-weight:500;font-variant-numeric:tabular-nums;margin:2px 0}
+.clock-btn{min-width:150px;min-height:52px;justify-content:center;font-size:16px;background:var(--accent);border-color:var(--accent);color:var(--accent-ink);border-radius:12px}
+.clock-btn.out{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.clock-btn.armed{background:var(--danger);border-color:var(--danger);color:#fff}
+.clock-btn.ghosty{background:var(--surface);color:var(--ink);border-color:var(--line)}
+.clock-btn.ghosty.armed{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.pline{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-size:13px;color:var(--ink-2);padding:2px 2px}
+.pline .tm{font-family:var(--f-mono);color:var(--ink);font-weight:500}
+.pline.void{text-decoration:line-through}
+.hsum{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.hsum>div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column}
+.hsum b{font-family:var(--f-mono);font-size:20px;font-weight:500;font-variant-numeric:tabular-nums}
+.hsum span{font-size:12px;color:var(--ink-2)}
+.hsum .bad{border-color:var(--danger);background:var(--danger-soft)}
+.hsum .bad b{color:var(--danger)}
+.hperson{padding:0;overflow:hidden}
+.hhead{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface-2)}
+.hhead .av{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:11px;color:#fff}
+.hhead .tm{font-family:var(--f-mono);font-weight:500}
+.hrows{display:flex;flex-direction:column}
+.hrow{display:grid;grid-template-columns:64px 1fr auto;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);cursor:pointer}
+.hrow:hover{background:var(--surface-2)}
+.hrow.flagged{box-shadow:inset 3px 0 0 var(--danger)}
+.hrow.void{opacity:.55}
+.hrow .tm{font-family:var(--f-mono);font-weight:500}
+.hday{font-size:13px;font-weight:600;color:var(--ink-2)}
+.hmain{min-width:0;font-size:14px}
+.flags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.flag{font-size:11px;padding:2px 7px;border-radius:999px;background:var(--surface-2);color:var(--ink-2)}
+.flag.red{background:var(--danger-soft);color:var(--danger);font-weight:600}
+.hrs-alert{border-color:var(--danger)}
+.hist{display:flex;flex-direction:column;gap:6px;font-size:13px;border-top:1px solid var(--line);padding-top:10px}
+@media (max-width:700px){.hrow{grid-template-columns:1fr auto}.hday{grid-column:1/-1}.clock-btn{width:100%}}
 .mine-sum{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .mine-sum .big{font-family:var(--f-mono);font-size:28px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.1}
 .mdays{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
@@ -435,6 +475,7 @@ table.list{border-collapse:collapse;width:100%;min-width:620px}
     <button class="tab" role="tab" data-view="schedule" id="tab-schedule"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg></span><span>Schedule</span></button>
     <button class="tab" role="tab" data-view="briefing" id="tab-briefing"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14.5 3v4.5H19M9 12h7M9 16h5"/></svg></span><span>Briefing</span></button>
     <button class="tab" role="tab" data-view="messages" id="tab-messages"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><span class="badge" id="unread" hidden>0</span></span><span>Messages</span></button>
+    <button class="tab" role="tab" data-view="hours" id="tab-hours" hidden><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span class="badge" id="rev" hidden>0</span></span><span>Hours</span></button>
     <button class="tab" role="tab" data-view="team" id="tab-team"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.8a3.3 3.3 0 0 1 0 6.4M18 14.8c2 .7 3.2 2.4 3.5 5.2"/></svg><span class="badge" id="reqs" hidden>0</span></span><span>Team</span></button>
   </nav>
   <div id="banner"></div>
@@ -445,7 +486,7 @@ table.list{border-collapse:collapse;width:100%;min-width:620px}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, doc, onSnapshot, query, where, orderBy, limit, getDoc, getDocs, setDoc, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, doc, onSnapshot, query, where, orderBy, limit, getDoc, getDocs, setDoc, deleteDoc, writeBatch, runTransaction, serverTimestamp, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 (() => {
 "use strict";
@@ -506,8 +547,8 @@ const store = {
     if (qq.limit) c.push(limit(qq.limit));
     return query(collection(fb.db, coll), ...c);
   },
-  sub(coll, qq, cb) { return onSnapshot(this.q(coll, qq), s => cb(s.docs.map(d => ({ id: d.id, ...d.data() }))), dbError); },
-  subDoc(path, cb, onErr) { return onSnapshot(doc(fb.db, path), s => cb(s.exists() ? { id: s.id, ...s.data() } : null), onErr || dbError); },
+  sub(coll, qq, cb) { return onSnapshot(this.q(coll, qq), s => cb(s.docs.map(d => ({ id: d.id, ...d.data({ serverTimestamps: "estimate" }) }))), dbError); },
+  subDoc(path, cb, onErr) { return onSnapshot(doc(fb.db, path), s => cb(s.exists() ? { id: s.id, ...s.data({ serverTimestamps: "estimate" }) } : null), onErr || dbError); },
   async get(coll, qq) { const s = await getDocs(this.q(coll, qq)); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
   set(path, data) { return setDoc(doc(fb.db, path), data); },
   merge(path, data) { return setDoc(doc(fb.db, path), data, { merge: true }); },
@@ -539,7 +580,8 @@ const S = {
   staff: [], shifts: [], briefing: null, channels: [], messages: [],
   channel: lsGet("jornada-channel") || "general",
   user: null, me: null, canEdit: false, canWrite: null, live: true, readonly: false, ready: false,
-  users: {}, adminIds: new Set(), setup: undefined, dms: [], members: [], memberIds: new Set()
+  users: {}, adminIds: new Set(), setup: undefined, dms: [], members: [], memberIds: new Set(),
+  myClock: null, myOpen: null, myPunches: [], weekPunches: [], openPunches: [], clockBusy: false
 };
 const mq = matchMedia("(max-width: 700px)");
 let narrow = mq.matches;
@@ -557,6 +599,31 @@ function subscribeWeek() {
   if (key === subWeekKey) return; subWeekKey = key;
   unsubWeek && unsubWeek();
   unsubWeek = store.sub("shifts", { where: [["date", ">=", mon], ["date", "<=", addDays(mon, 6)]] }, rows => { S.shifts = rows; refresh(); });
+  subscribePunches();
+}
+let unsubMyP, unsubWeekP, unsubOpenP, punchKey;
+function subscribePunches() {
+  if (!S.me || !fullStarted) return;
+  const mon = mondayOf(S.date), key = mon + "|" + S.canEdit;
+  if (key === punchKey) return; punchKey = key;
+  unsubMyP && unsubMyP(); unsubWeekP && unsubWeekP(); unsubOpenP && unsubOpenP();
+  unsubWeekP = unsubOpenP = null;
+  unsubMyP = store.sub("punches", { where: [["uid", "==", S.me.id], ["week", "==", mon]] }, r => { S.myPunches = r; refresh("punch"); });
+  if (S.canEdit) {
+    unsubWeekP = store.sub("punches", { where: [["week", "==", mon]] }, r => { S.weekPunches = r; refresh("punch"); });
+    unsubOpenP = store.sub("punches", { where: [["status", "==", "open"]] }, r => { S.openPunches = r; refresh("punch"); });
+  } else { S.weekPunches = []; S.openPunches = []; }
+}
+let unsubOpenDoc, openKey;
+function watchMyClock() {
+  store.subDoc("clock/" + S.me.id, d => {
+    S.myClock = d;
+    const id = d && d.open || null;
+    if (id === openKey) { refresh("punch"); return; }
+    openKey = id; unsubOpenDoc && unsubOpenDoc(); unsubOpenDoc = null; S.myOpen = null;
+    if (id) unsubOpenDoc = store.subDoc("punches/" + id, p => { S.myOpen = p; refresh("punch"); });
+    refresh("punch");
+  });
 }
 function subscribeBrief() {
   if (S.date === subBriefKey) return; subBriefKey = S.date;
@@ -605,6 +672,9 @@ function renderShell() {
     h("span", { style: "flex:1;min-width:200px" }, h("b", null, pend.length === 1 ? "1 person is" : pend.length + " people are"), " waiting for your approval to join the team."),
     h("button", { class: "btn primary", onclick: () => go("team") }, "Review")));
   const rb = $("#reqs"); rb.hidden = !(S.canEdit && pend.length); rb.textContent = pend.length;
+  $("#tab-hours").hidden = !S.canEdit;
+  const nrev = S.canEdit ? reviewCount() : 0;
+  const rv = $("#rev"); rv.hidden = !nrev; rv.textContent = nrev;
   updateUnread();
 }
 function updateUnread() {
@@ -616,7 +686,9 @@ let mounted = null;
 function render() {
   renderShell();
   const v = $("#view");
+  if (S.view === "hours" && !S.canEdit) S.view = "mine";
   if (S.view === "mine") { v.replaceChildren(viewMine()); mounted = "mine"; }
+  else if (S.view === "hours") { v.replaceChildren(viewHours()); mounted = "hours"; }
   else if (S.view === "schedule") { v.replaceChildren(viewSchedule()); mounted = "schedule"; }
   else if (S.view === "team") { v.replaceChildren(viewTeam()); mounted = "team"; }
   else if (S.view === "briefing") { v.replaceChildren(viewBriefing()); mounted = "briefing"; updateBrief(true); }
@@ -624,7 +696,7 @@ function render() {
 }
 function refresh(what) {
   renderShell();
-  if (mounted === "mine") { if (what !== "msgs" && what !== "brief" && what !== "chans") render(); }
+  if (mounted === "mine" || mounted === "hours") { if (what !== "msgs" && what !== "brief" && what !== "chans") render(); }
   else if (mounted === "schedule" || mounted === "team") { if (what !== "msgs" && !(what === "brief" && mounted === "team")) render(); }
   else if (mounted === "briefing") updateBrief(false);
   else if (mounted === "messages") { updateChannels(); if (what === "msgs") updateMsgs(); }
@@ -715,15 +787,19 @@ function viewMine() {
       installPrompt ? h("button", { class: "btn primary", onclick: async () => { installPrompt.prompt(); try { await installPrompt.userChoice; } catch {} installPrompt = null; render(); } }, "Install") : null,
       h("button", { class: "btn ghost", onclick: e => { lsSet("jornada-tip", 1); e.target.closest(".notice").remove(); } }, "Not now"));
   }
+  const myP = S.myPunches.filter(p => !p.void || p.voidReason);
+  const workedWeek = myP.filter(p => !p.void).reduce((a, p) => a + paidMin(p, shiftFor(p)), 0);
   return h("section", { style: "display:flex;flex-direction:column;gap:12px;max-width:720px" },
     tip,
+    isThisWeek || S.myOpen && !S.myOpen.outAt ? clockCard() : null,
     h("div", { class: "toolbar" },
       h("button", { class: "btn icon-btn", "aria-label": "Previous week", onclick: () => setDate(addDays(S.date, -7)) }, "‹"),
       h("span", { class: "label", text: label }),
       h("button", { class: "btn icon-btn", "aria-label": "Next week", onclick: () => setDate(addDays(S.date, 7)) }, "›"),
       h("button", { class: "btn", disabled: isThisWeek ? true : null, onclick: () => setDate(t) }, "This week")),
     h("div", { class: "panel mine-sum" },
-      h("div", null, h("div", { class: "big" }, fmtH(total)), h("div", { class: "muted" }, `${mine.length} ${mine.length === 1 ? "shift" : "shifts"} this week` + (c ? ` · contract ${c} h` : ""))),
+      h("div", null, h("div", { class: "big" }, fmtH(total)), h("div", { class: "muted" }, `planned · ${mine.length} ${mine.length === 1 ? "shift" : "shifts"}` + (c ? ` · contract ${c} h` : ""))),
+      myP.length ? h("div", null, h("div", { class: "big", style: "color:var(--accent)" }, fmtDur(workedWeek)), h("div", { class: "muted" }, "worked (paid, breaks deducted)")) : null,
       c ? h("div", { class: "meter" + (total > c ? " over" : ""), style: "width:120px" }, h("i", { style: `width:${Math.min(100, total / c * 100)}%` })) : null),
     h("div", { class: "mdays" }, days.map((d, i) => {
       const list = mine.filter(s => s.date === d).sort((a, b) => mins(a.start) - mins(b.start));
@@ -735,8 +811,348 @@ function viewMine() {
           return h("div", { class: "mshift", style: `--c:${me.color}` },
             h("div", null, h("span", { class: "tm" }, `${s.start}–${s.end}`), on ? h("span", { class: "now-chip" }, "Now") : null),
             h("div", { class: "ps", text: [s.position, fmtH(shiftHours(s)), s.breakMin ? s.breakMin + " min break" : "", s.note].filter(Boolean).join(" · ") }));
-        }) : h("span", { class: "off" }, "Off")));
+        }) : (myP.some(p => p.day === d) ? null : h("span", { class: "off" }, "Off")),
+          myP.filter(p => p.day === d).sort((a, b) => tsMs(a.inAt) - tsMs(b.inAt)).map(myPunchLine)));
     })));
+}
+function myPunchLine(p) {
+  if (p.void) return h("div", { class: "pline void" }, h("span", null, "Record removed by manager"), p.voidReason ? h("span", { class: "muted", text: " — " + p.voidReason }) : null);
+  const sh = shiftFor(p), open = !p.outAt;
+  return h("div", { class: "pline" },
+    h("span", { class: "tm" }, fmtClock(tsMs(p.inAt)) + "–" + (open ? "now" : fmtClock(tsMs(p.outAt)))),
+    h("span", null, open ? h("span", { "data-since": tsMs(p.inAt), "data-brk": effBreak(p, sh) }, fmtDur(paidMin(p, sh))) : fmtDur(paidMin(p, sh)), " paid", effBreak(p, sh) ? ` · ${effBreak(p, sh)} min break` : " · no break"),
+    h("span", { class: "pill" + (p.approved ? " admin" : "") }, open ? "Working" : p.approved ? "Approved" : "Pending"),
+    (p.edits || []).length ? h("span", { class: "pill" }, "Edited by manager") : null);
+}
+
+/* ---------- TIME TRACKING ---------- */
+const tsMs = t => t == null ? null : (typeof t.toMillis === "function" ? t.toMillis() : typeof t === "number" ? t : +new Date(t));
+const fmtClock = ms => new Date(ms).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+const fmtWhen = ms => { const d = iso(new Date(ms)); return (d === todayISO() ? "" : fmtDay(d, { weekday: "short", day: "numeric", month: "short" }) + " ") + fmtClock(ms); };
+const fmtDur = m => { m = Math.max(0, Math.round(m)); return Math.floor(m / 60) + " h " + pad(m % 60) + " min"; };
+const MIN = 60000, OPEN_WARN_H = 14, EARLY_MIN = 15;
+function shiftTimes(s) { const [y, mo, d] = s.date.split("-").map(Number); const [a, b] = shiftSpan(s); return [new Date(y, mo - 1, d, 0, a).getTime(), new Date(y, mo - 1, d, 0, b).getTime()]; }
+const shiftIndex = () => Object.fromEntries(S.shifts.map(x => [x.id, x]));
+function shiftFor(p) { return p.shiftId ? (shiftIndex()[p.shiftId] || null) : null; }
+function effBreak(p, sh) { return p.breakMin != null ? +p.breakMin : (sh && sh.breakMin != null ? +sh.breakMin : 30); }
+// Clock changes (summer/winter time): pay whichever is more for the employee — the real time
+// that passed, or the time the wall clock shows (e.g. 00:00–08:00 on the spring night = 8 h, not 7 h).
+const wallMs = ms => { const d = new Date(ms); return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds(), d.getMilliseconds()); };
+function clockShiftMin(a, b) { return Math.round(((wallMs(b) - wallMs(a)) - (b - a)) / MIN); }
+function workedMin(p, now = Date.now()) {
+  const a = tsMs(p.inAt), b = p.outAt ? tsMs(p.outAt) : now;
+  if (!a || !b) return 0;
+  return Math.max(0, Math.floor(Math.max(b - a, wallMs(b) - wallMs(a)) / MIN));
+}
+function paidMin(p, sh, now) { return Math.max(0, workedMin(p, now) - effBreak(p, sh)); }
+function punchFlags(p, sh, now = Date.now()) {
+  const f = [], red = t => f.push({ red: true, t }), info = t => f.push({ red: false, t });
+  if (p.void) { info("Removed" + (p.voidReason ? ": " + p.voidReason : "")); return f; }
+  const a = tsMs(p.inAt), b = p.outAt ? tsMs(p.outAt) : null;
+  if (!b && now - a > OPEN_WARN_H * 3600000) red(`Still checked in after ${Math.floor((now - a) / 3600000)} h — forgot to check out?`);
+  if (!p.shiftId && !p.manual) red("No shift was planned");
+  else if (p.shiftId && !sh) info("Planned shift was deleted or moved");
+  if (sh) {
+    const [s0, s1] = shiftTimes(sh);
+    const early = Math.round((s0 - a) / MIN), late = Math.round((a - s0) / MIN);
+    if (early > EARLY_MIN) red(`Checked in ${early} min before the shift`);
+    else if (late > 5) info(`${late} min late`);
+    if (b) { const over = Math.round((b - s1) / MIN), left = Math.round((s1 - b) / MIN); if (over > 15) info(`Stayed ${over} min after the shift`); else if (left > 15) info(`Left ${left} min early`); }
+  }
+  if (b && b <= a) red("Check-out is before check-in");
+  if (b) { const cs = clockShiftMin(a, b); if (cs > 0) info(`Clock change: paid ${cs} min extra (clock time, in the employee's favour)`); else if (cs < 0) info(`Clock change: real time counted (${-cs} min more than the clock shows)`); }
+  if (b && workedMin(p, now) > 12 * 60) red("More than 12 hours");
+  if (b && effBreak(p, sh) > workedMin(p, now)) red("Break is longer than the time worked");
+  if ((p.edits || []).length) info(p.manual ? "Added by a manager" : "Edited by a manager");
+  return f;
+}
+const needsReview = p => !p.void && !p.approved && (!p.outAt || punchFlags(p, shiftFor(p)).some(x => x.red));
+function reviewCount() {
+  const ids = new Set();
+  for (const p of S.openPunches) if (Date.now() - tsMs(p.inAt) > OPEN_WARN_H * 3600000) ids.add(p.id);
+  for (const p of S.weekPunches) if (p.outAt && needsReview(p)) ids.add(p.id);
+  return ids.size;
+}
+function tickLive() {
+  document.querySelectorAll("[data-since]").forEach(el => { const w = Math.floor((Date.now() - +el.dataset.since) / MIN); el.textContent = fmtDur(Math.max(0, w - (+el.dataset.brk || 0))); });
+  document.querySelectorAll("[data-worked]").forEach(el => { el.textContent = fmtDur(Math.floor((Date.now() - +el.dataset.worked) / MIN)); });
+}
+function clockErr(e) {
+  console.warn(e);
+  const c = e && e.code;
+  return c === "already-in" ? "You're already checked in." :
+    c === "not-in" ? "You're not checked in." :
+    c === "unavailable" || c === "failed-precondition" || c === "deadline-exceeded" || !navigator.onLine ? "No internet connection. You need to be online to check in or out — nothing was saved." :
+    c === "permission-denied" ? "The app refused this. Reload the app and try again, or tell your manager." :
+    "Something went wrong — nothing was saved. Try again.";
+}
+function myShiftNow() {
+  const me = S.me.id, now = Date.now(), t = todayISO(), y = addDays(t, -1);
+  const cands = S.shifts.concat(S.prevShifts || []).filter(s => s.staffId === me && (s.date === t || s.date === y));
+  let best = null, next = null;
+  for (const s of cands) {
+    const [a, b] = shiftTimes(s);
+    if (now >= a - EARLY_MIN * MIN && now <= b) { if (!best || a < shiftTimes(best)[0]) best = s; }
+    else if (a - EARLY_MIN * MIN > now && s.date === t) { if (!next || a < shiftTimes(next)[0]) next = s; }
+  }
+  return { best, next };
+}
+async function checkIn(shift) {
+  if (S.clockBusy) return;
+  S.clockBusy = true; render();
+  try {
+    if (!navigator.onLine) throw { code: "unavailable" };
+    const uid = S.me.id, cref = doc(fb.db, "clock/" + uid), pref = doc(collection(fb.db, "punches"));
+    const today = todayISO();
+    await runTransaction(fb.db, async tx => {
+      const c = await tx.get(cref);
+      if (c.exists() && c.data().open) {
+        const old = await tx.get(doc(fb.db, "punches/" + c.data().open));
+        if (old.exists() && !old.data().outAt) throw { code: "already-in" };
+      }
+      tx.set(pref, { uid, shiftId: shift ? shift.id : null, day: today, week: mondayOf(today), inAt: serverTimestamp(), outAt: null, status: "open", approved: false, edits: [], manual: false, void: false, createdAt: serverTimestamp() });
+      tx.set(cref, { open: pref.id, at: serverTimestamp() });
+    });
+    toast("Checked in at " + fmtClock(Date.now()));
+  } catch (e) { toast(clockErr(e)); }
+  S.clockBusy = false; render();
+}
+async function checkOut() {
+  if (S.clockBusy) return;
+  S.clockBusy = true; render();
+  try {
+    if (!navigator.onLine) throw { code: "unavailable" };
+    const uid = S.me.id, cref = doc(fb.db, "clock/" + uid);
+    await runTransaction(fb.db, async tx => {
+      const c = await tx.get(cref);
+      const id = c.exists() && c.data().open;
+      if (!id) throw { code: "not-in" };
+      const pref = doc(fb.db, "punches/" + id), p = await tx.get(pref);
+      if (!p.exists() || p.data().outAt) throw { code: "not-in" };
+      tx.update(pref, { outAt: serverTimestamp(), status: "done" });
+      tx.set(cref, { open: null, at: serverTimestamp() });
+    });
+    toast("Checked out at " + fmtClock(Date.now()));
+  } catch (e) { toast(clockErr(e)); }
+  S.clockBusy = false; render();
+}
+function clockCard() {
+  const open = S.myOpen && !S.myOpen.outAt ? S.myOpen : null;
+  const busy = S.clockBusy;
+  if (open) {
+    const sh = shiftFor(open), since = tsMs(open.inAt);
+    const out = h("button", { class: "btn clock-btn out", disabled: busy ? true : null }, busy ? "Saving…" : "Check out");
+    out.onclick = () => {
+      if (!out.classList.contains("armed")) { out.classList.add("armed"); out.textContent = "Tap again to check out"; setTimeout(() => { if (out.isConnected && out.classList.contains("armed")) { out.classList.remove("armed"); out.textContent = "Check out"; } }, 5000); return; }
+      checkOut();
+    };
+    return h("div", { class: "panel clock on" },
+      h("div", { class: "clock-info" },
+        h("div", { class: "clock-state" }, h("span", { class: "dot" }), "Checked in"),
+        h("div", { class: "clock-big", "data-worked": since }, fmtDur(workedMin(open))),
+        h("div", { class: "muted" }, "Since " + fmtWhen(since) + (sh ? ` · shift ${sh.start}–${sh.end}` : " · no shift planned"), ` · ${effBreak(open, sh)} min break will be deducted`)),
+      out);
+  }
+  const { best, next } = myShiftNow();
+  let body, btn;
+  if (best) {
+    body = h("div", null, h("div", { class: "clock-state" }, "Your shift"), h("div", { class: "clock-big" }, `${best.start}–${best.end}`), h("div", { class: "muted", text: [best.position, best.date !== todayISO() ? "started yesterday" : ""].filter(Boolean).join(" · ") || " " }));
+    const done = S.myPunches.filter(x => x.shiftId === best.id && x.outAt && !x.void).sort((x, y) => tsMs(y.outAt) - tsMs(x.outAt))[0];
+    if (done) {
+      body = h("div", null, h("div", { class: "clock-state" }, "Checked out"), h("div", { class: "clock-big" }, fmtClock(tsMs(done.inAt)) + "–" + fmtClock(tsMs(done.outAt))), h("div", { class: "muted" }, `Shift ${best.start}–${best.end} · ${fmtDur(paidMin(done, best))} paid`));
+      btn = h("button", { class: "btn clock-btn ghosty", disabled: busy ? true : null }, busy ? "Saving…" : "Check in again");
+      btn.onclick = () => { if (!btn.classList.contains("armed")) { btn.classList.add("armed"); btn.textContent = "Tap again to check in"; return; } checkIn(best); };
+    } else
+    btn = h("button", { class: "btn clock-btn", disabled: busy ? true : null, onclick: () => checkIn(best) }, busy ? "Saving…" : "Check in");
+  } else if (next) {
+    const [a] = shiftTimes(next);
+    body = h("div", null, h("div", { class: "clock-state" }, "Next shift today"), h("div", { class: "clock-big" }, `${next.start}–${next.end}`), h("div", { class: "muted" }, `You can check in from ${fmtClock(a - EARLY_MIN * MIN)}`));
+    btn = h("button", { class: "btn clock-btn", disabled: true }, "Check in");
+  } else {
+    body = h("div", null, h("div", { class: "clock-state" }, "No shift right now"), h("div", { class: "muted", style: "margin-top:4px" }, "If you're working anyway, you can check in. Your manager will review it."));
+    btn = h("button", { class: "btn clock-btn ghosty", disabled: busy ? true : null });
+    btn.textContent = busy ? "Saving…" : "Check in anyway";
+    btn.onclick = () => { if (!btn.classList.contains("armed")) { btn.classList.add("armed"); btn.textContent = "Tap again to confirm"; return; } checkIn(null); };
+  }
+  return h("div", { class: "panel clock" }, h("div", { class: "clock-info" }, body), btn);
+}
+
+/* ---------- HOURS (managers) ---------- */
+const S_hours = { filter: "all" };
+function viewHours() {
+  const mon = mondayOf(S.date), days = [...Array(7)].map((_, i) => addDays(mon, i)), t = todayISO();
+  const sameM = parse(mon).getMonth() === parse(days[6]).getMonth();
+  const label = sameM ? `${parse(mon).getDate()}–${fmtDay(days[6], { day: "numeric", month: "short" })}` : `${parse(mon).getDate()} ${fmtDay(mon, { month: "short" })} – ${fmtDay(days[6], { day: "numeric", month: "short" })}`;
+  const all = S.weekPunches.slice().sort((a, b) => tsMs(a.inAt) - tsMs(b.inAt));
+  const live = all.filter(p => !p.void);
+  const openOld = S.openPunches.filter(p => mondayOf(p.day || t) !== mon);
+  const pending = live.filter(p => p.outAt && !p.approved), ok = pending.filter(p => !needsReview(p));
+  const approveAll = h("button", { class: "btn primary", disabled: ok.length ? null : true }, ok.length ? `Approve ${ok.length} without issues` : "Nothing to approve");
+  approveAll.onclick = async () => {
+    if (!approveAll.classList.contains("armed")) { approveAll.classList.add("armed"); approveAll.textContent = `Approve ${ok.length}? Confirm`; return; }
+    approveAll.disabled = true;
+    for (let i = 0; i < ok.length; i += 400) {
+      const b = writeBatch(fb.db);
+      for (const p of ok.slice(i, i + 400)) b.set(doc(fb.db, "punches/" + p.id), { approved: true, approvedBy: S.me.id, approvedAt: serverTimestamp() }, { merge: true });
+      if (!(await safe(b.commit()))) return;
+    }
+    toast(`${ok.length} records approved`);
+  };
+  const byUser = {};
+  for (const p of all) (byUser[p.uid] ||= []).push(p);
+  const uids = Object.keys(byUser).sort((a, b) => (nameOf(a) || "").localeCompare(nameOf(b) || "", "en"));
+  const exp = h("button", { class: "btn" }, "Export to Excel");
+  exp.onclick = () => {
+    const np = live.filter(p => !p.approved).length;
+    if (np && !exp.classList.contains("armed")) { exp.classList.add("armed"); exp.textContent = `${np} not approved — export anyway?`; return; }
+    exportCsv(mon, all); exp.classList.remove("armed"); exp.textContent = "Export to Excel";
+  };
+  return h("section", { style: "display:flex;flex-direction:column;gap:12px" },
+    h("div", { class: "toolbar" },
+      h("button", { class: "btn icon-btn", "aria-label": "Previous week", onclick: () => setDate(addDays(S.date, -7)) }, "‹"),
+      h("span", { class: "label", text: label }),
+      h("button", { class: "btn icon-btn", "aria-label": "Next week", onclick: () => setDate(addDays(S.date, 7)) }, "›"),
+      h("button", { class: "btn", disabled: mon === mondayOf(t) ? true : null, onclick: () => setDate(t) }, "This week")),
+    openOld.length ? h("div", { class: "panel hrs-alert" }, h("h3", null, "Still checked in from an earlier week"),
+      h("div", { class: "hrows" }, openOld.map(p => punchRow(p, true)))) : null,
+    h("div", { class: "hsum" },
+      h("div", null, h("b", null, fmtDur(live.filter(p => p.approved).reduce((a, p) => a + paidMin(p, shiftFor(p)), 0))), h("span", null, "approved")),
+      h("div", null, h("b", null, String(pending.length)), h("span", null, "waiting for approval")),
+      h("div", { class: pending.length - ok.length ? "bad" : "" }, h("b", null, String(pending.length - ok.length)), h("span", null, "need a look")),
+      h("div", null, h("b", null, String(live.filter(p => !p.outAt).length)), h("span", null, "checked in now"))),
+    h("div", { class: "toolbar" }, approveAll, h("button", { class: "btn", onclick: () => openPunch(null) }, "+ Add record"), h("span", { class: "spacer" }), exp),
+    uids.length ? uids.map(uid => {
+      const list = byUser[uid], paid = list.filter(p => !p.void).reduce((a, p) => a + paidMin(p, shiftFor(p)), 0);
+      const st = staffById()[uid];
+      return h("div", { class: "panel hperson" },
+        h("div", { class: "hhead" }, h("span", { class: "av", style: `background:${st ? st.color : hashColor(uid)}` }, initials(nameOf(uid) || "?")),
+          h("b", { text: nameOf(uid) || "Former team member" }), h("span", { class: "spacer" }),
+          h("span", { class: "tm" }, fmtDur(paid)), st && st.contractHours ? h("span", { class: "muted" }, " / " + st.contractHours + " h") : null),
+        h("div", { class: "hrows" }, list.map(p => punchRow(p, false))));
+    }) : h("div", { class: "empty" }, h("b", null, "No check-ins this week"), "When people check in and out, their records show up here for you to review and approve."),
+    h("p", { class: "muted" }, "Paid time = check-out minus check-in, minus the break. The break comes from the planned shift (30 min if there's no shift); change it per record by tapping it. Records with a red flag must be approved one by one."));
+}
+function punchRow(p, withName) {
+  const sh = shiftFor(p), fl = punchFlags(p, sh), open = !p.outAt, a = tsMs(p.inAt);
+  const approve = !p.void && !open && !p.approved ? h("button", { class: "btn" }, "Approve") : null;
+  if (approve) approve.onclick = async e => { e.stopPropagation(); approve.disabled = true; await safe(store.merge("punches/" + p.id, { approved: true, approvedBy: S.me.id, approvedAt: serverTimestamp() }), "Approved"); };
+  return h("div", { class: "hrow" + (p.void ? " void" : "") + (fl.some(x => x.red) && !p.approved ? " flagged" : ""), tabindex: "0", role: "button", onclick: () => openPunch(p), onkeydown: e => { if (e.key === "Enter") openPunch(p); } },
+    h("div", { class: "hday" }, fmtDay(iso(new Date(a)), { weekday: "short", day: "numeric" })),
+    h("div", { class: "hmain" },
+      h("div", null, withName ? h("b", { text: (nameOf(p.uid) || "Someone") + " · " }) : null,
+        h("span", { class: "tm" }, fmtClock(a) + "–" + (open ? "…" : fmtClock(tsMs(p.outAt)))),
+        h("span", { class: "muted" }, open ? " · checked in " : " · ", open ? h("span", { "data-worked": a }, fmtDur(workedMin(p))) : fmtDur(paidMin(p, sh)) + " paid", ` · ${effBreak(p, sh)} min break`, sh ? ` · plan ${sh.start}–${sh.end}` : "")),
+      fl.length ? h("div", { class: "flags" }, fl.map(x => h("span", { class: "flag" + (x.red ? " red" : ""), text: x.t }))) : null),
+    h("div", { class: "hact" }, p.void ? h("span", { class: "pill" }, "Removed") : open ? h("span", { class: "pill" }, "Working") : p.approved ? h("span", { class: "pill admin" }, "Approved") : approve));
+}
+const toLocalInput = ms => { const d = new Date(ms); return `${iso(d)}T${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+function openPunch(p) {
+  const isNew = !p, sh = p ? shiftFor(p) : null;
+  const who = h("select", { id: "t-who", disabled: !isNew ? true : null }, sortedStaff().map(x => h("option", { value: x.id }, x.name)));
+  if (p) { if (![...who.options].some(o => o.value === p.uid)) who.append(h("option", { value: p.uid }, nameOf(p.uid) || "Former team member")); who.value = p.uid; }
+  const now = Date.now();
+  const fin = h("input", { id: "t-in", type: "datetime-local", value: toLocalInput(p ? tsMs(p.inAt) : now - 8 * 3600000) });
+  const fout = h("input", { id: "t-out", type: "datetime-local", value: p && p.outAt ? toLocalInput(tsMs(p.outAt)) : isNew ? toLocalInput(now) : "" });
+  const defBreak = sh && sh.breakMin != null ? +sh.breakMin : 30;
+  const fbrk = h("input", { id: "t-brk", type: "number", min: "0", max: "600", step: "5", value: p && p.breakMin != null ? p.breakMin : "", placeholder: `${defBreak} (default)` });
+  const freason = h("input", { id: "t-why", maxlength: "200", placeholder: isNew ? "e.g. Forgot to check in" : "e.g. Forgot to check out, left at 23:10" });
+  const sum = h("div", { class: "summary" });
+  const calc = () => {
+    const a = new Date(fin.value).getTime(), b = fout.value ? new Date(fout.value).getTime() : null;
+    const br = fbrk.value === "" ? defBreak : Math.max(0, +fbrk.value);
+    if (!a) { sum.textContent = ""; return; }
+    if (b == null) { sum.textContent = "Still checked in"; return; }
+    if (b <= a) { sum.textContent = "Check-out must be after check-in"; return; }
+    const w = Math.floor((b - a) / MIN);
+    sum.textContent = `Worked ${fmtDur(w)} − break ${br} min = ${fmtDur(Math.max(0, w - br))} paid`;
+  };
+  [fin, fout, fbrk].forEach(x => x.addEventListener("input", calc)); calc();
+  const save = async () => {
+    const a = new Date(fin.value).getTime(), b = fout.value ? new Date(fout.value).getTime() : null;
+    const brk = fbrk.value === "" ? null : Math.max(0, Math.round(+fbrk.value));
+    if (!a) { toast("Set the check-in time."); return; }
+    if (isNew && b == null) { toast("Set the check-out time."); return; }
+    if (b != null && (b <= a || b - a > 24 * 3600000)) { toast("Check-out must be after check-in and within 24 hours."); return; }
+    if (b != null && b > Date.now() + 5 * MIN) { toast("Check-out can't be in the future."); return; }
+    const reason = freason.value.trim();
+    const changes = [];
+    if (isNew) changes.push({ field: "created" });
+    else {
+      if (a !== tsMs(p.inAt)) changes.push({ field: "in", from: tsMs(p.inAt), to: a });
+      if ((b || null) !== (p.outAt ? tsMs(p.outAt) : null)) changes.push({ field: "out", from: p.outAt ? tsMs(p.outAt) : null, to: b });
+      if ((brk ?? null) !== (p.breakMin ?? null)) changes.push({ field: "break", from: p.breakMin ?? null, to: brk });
+    }
+    if (!changes.length) { close(); return; }
+    if (!reason) { toast("Write the reason for the change."); freason.focus(); return; }
+    const day = iso(new Date(a)), entry = { by: S.me.id, at: Timestamp.now(), reason, changes };
+    const uid = isNew ? who.value : p.uid;
+    if (!uid) { toast("Choose a person."); return; }
+    const data = { inAt: Timestamp.fromMillis(a), outAt: b != null ? Timestamp.fromMillis(b) : null, status: b != null ? "done" : "open", breakMin: brk, day, week: mondayOf(day), approved: false, approvedBy: null, approvedAt: null };
+    close();
+    const batch = writeBatch(fb.db);
+    if (isNew) {
+      const match = S.shifts.find(x => x.staffId === uid && x.date === day) || null;
+      batch.set(doc(collection(fb.db, "punches")), { ...data, uid, shiftId: match ? match.id : null, manual: true, void: false, edits: [entry], createdAt: serverTimestamp() });
+    } else {
+      batch.set(doc(fb.db, "punches/" + p.id), { ...data, edits: [...(p.edits || []), entry] }, { merge: true });
+      if (b != null && !p.outAt) batch.set(doc(fb.db, "clock/" + p.uid), { open: null, at: serverTimestamp() });
+    }
+    await safe(batch.commit(), isNew ? "Record added" : "Changes saved — approve it again when ready");
+  };
+  const voidB = !isNew && !p.void ? h("button", { class: "btn danger left" }, "Remove record") : null;
+  if (voidB) voidB.onclick = async () => {
+    const reason = freason.value.trim();
+    if (!reason) { toast("Write the reason for removing it."); freason.focus(); return; }
+    if (!voidB.classList.contains("armed")) { voidB.classList.add("armed"); voidB.textContent = "Remove? Confirm"; return; }
+    close();
+    const batch = writeBatch(fb.db);
+    batch.set(doc(fb.db, "punches/" + p.id), { void: true, voidReason: reason, approved: false, edits: [...(p.edits || []), { by: S.me.id, at: Timestamp.now(), reason, changes: [{ field: "removed" }] }] }, { merge: true });
+    if (!p.outAt) batch.set(doc(fb.db, "clock/" + p.uid), { open: null, at: serverTimestamp() });
+    await safe(batch.commit(), "Record removed (kept in the history)");
+  };
+  const unapprove = !isNew && p.approved ? h("button", { class: "btn ghost" }, "Undo approval") : null;
+  if (unapprove) unapprove.onclick = async () => { close(); await safe(store.merge("punches/" + p.id, { approved: false, approvedBy: null, approvedAt: null }), "Approval undone"); };
+  const approveB = !isNew && !p.void && p.outAt && !p.approved ? h("button", { class: "btn" }, "Approve") : null;
+  if (approveB) approveB.onclick = async () => { close(); await safe(store.merge("punches/" + p.id, { approved: true, approvedBy: S.me.id, approvedAt: serverTimestamp() }), "Approved"); };
+  const fmtV = (f, v) => v == null ? (f === "break" ? "default" : "—") : f === "break" ? v + " min" : fmtWhen(v);
+  const hist = !isNew ? h("div", { class: "hist" },
+    h("div", { class: "muted" }, `Checked in by ${p.manual ? "a manager" : "the employee"}` + (p.createdAt ? " · " + fmtWhen(tsMs(p.createdAt)) : "")),
+    (p.edits || []).map(e => h("div", null, h("b", null, fmtWhen(tsMs(e.at)) + " · "), h("span", { "data-uid": e.by, "data-fallback": "Manager" }), ": ",
+      (e.changes || []).map(c => c.field === "created" ? "added this record" : c.field === "removed" ? "removed this record" : `${c.field} ${fmtV(c.field, c.from)} → ${fmtV(c.field, c.to)}`).join(", "),
+      h("span", { class: "muted", text: " — " + (e.reason || "") }))),
+    p.approved ? h("div", null, h("b", null, "Approved"), " by ", h("span", { "data-uid": p.approvedBy, "data-fallback": "a manager" }), p.approvedAt ? " · " + fmtWhen(tsMs(p.approvedAt)) : "") : null) : null;
+  const close = modal(h("div", { class: "modal", role: "dialog", "aria-modal": "true" },
+    h("h2", null, isNew ? "Add record" : "Time record"),
+    h("div", { class: "field" }, h("label", { for: "t-who" }, "Person"), who),
+    h("div", { class: "row2" },
+      h("div", { class: "field" }, h("label", { for: "t-in" }, "Check in"), fin),
+      h("div", { class: "field" }, h("label", { for: "t-out" }, "Check out"), fout)),
+    h("div", { class: "field" }, h("label", { for: "t-brk" }, "Unpaid break (minutes) — 0 = no break"), fbrk),
+    sum,
+    p && sh ? h("div", { class: "muted" }, `Planned shift: ${sh.start}–${sh.end}` + (sh.position ? " · " + sh.position : "")) : null,
+    p ? h("div", { class: "flags" }, punchFlags(p, sh).map(x => h("span", { class: "flag" + (x.red ? " red" : ""), text: x.t }))) : null,
+    h("div", { class: "field" }, h("label", { for: "t-why" }, "Reason for the change (required, saved in the history)"), freason),
+    hist,
+    h("div", { class: "actions" }, voidB, unapprove, approveB, h("button", { class: "btn ghost", onclick: () => close() }, "Cancel"), h("button", { class: "btn primary", onclick: save }, isNew ? "Add" : "Save changes"))));
+  if (hist) fillPeople(hist);
+}
+function exportCsv(mon, rows) {
+  const dec = m => (Math.round(m / 60 * 100) / 100).toFixed(2).replace(".", ",");
+  const q = v => { v = v == null ? "" : String(v); return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  const head = ["Name", "Email", "Date", "Check in", "Check out", "Break (min)", "Paid (h:mm)", "Paid (hours)", "Planned shift", "Status", "Approved by", "Edited", "Notes"];
+  const lines = [head.join(";")];
+  const sorted = rows.slice().sort((a, b) => (nameOf(a.uid) || "").localeCompare(nameOf(b.uid) || "", "en") || tsMs(a.inAt) - tsMs(b.inAt));
+  for (const p of sorted) {
+    const sh = shiftFor(p), a = tsMs(p.inAt), b = p.outAt && !p.void ? tsMs(p.outAt) : null, pm = b ? paidMin(p, sh) : 0;
+    lines.push([nameOf(p.uid) || "Former team member", (S.users[p.uid] || {}).email || "", iso(new Date(a)), fmtClock(a), b ? (iso(new Date(b)) !== iso(new Date(a)) ? iso(new Date(b)) + " " : "") + fmtClock(b) : "",
+      effBreak(p, sh), b ? Math.floor(pm / 60) + ":" + pad(pm % 60) : "", b ? dec(pm) : "", sh ? `${sh.start}-${sh.end}` : "",
+      p.void ? "Removed" : !b ? "Still checked in" : p.approved ? "Approved" : "Not approved", p.approvedBy ? nameOf(p.approvedBy) : "", (p.edits || []).length ? "Yes" : "No",
+      punchFlags(p, sh).map(x => x.t).join(" | ")].map(q).join(";"));
+  }
+  const blob = new Blob(["\ufeff" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob), a = h("a", { href: url, download: `jornada-hours-${mon}.csv` });
+  document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000);
+  toast("Exported");
 }
 
 function copyWeekBtn(mon) {
@@ -1396,11 +1812,12 @@ function startFull(u) {
   S.canWrite = true; S.ready = true;
   render();
   store.sub("users", {}, rows => { S.users = Object.fromEntries(rows.map(r => [r.id, r])); rebuildStaff(); refresh(); });
-  store.sub("admins", {}, rows => { S.adminIds = new Set(rows.map(r => r.id)); const was = S.canEdit; S.canEdit = S.adminIds.has(u.uid); if (S.canEdit && !was) migrate(); if (was !== S.canEdit) render(); else refresh(); });
+  store.sub("admins", {}, rows => { S.adminIds = new Set(rows.map(r => r.id)); const was = S.canEdit; S.canEdit = S.adminIds.has(u.uid); if (S.canEdit && !was) migrate(); if (was !== S.canEdit) { subscribePunches(); render(); } else refresh(); });
   store.sub("members", {}, rows => { S.members = rows; S.memberIds = new Set(rows.map(r => r.id)); rebuildStaff(); subscribeMine(); refresh(); });
   store.sub("channels", {}, rows => { S.channels = rows; refresh("chans"); });
   store.sub("dms", { where: [["members", "array-contains", u.uid]] }, rows => { S.dms = rows; refresh("chans"); });
-  subscribeWeek(); subscribeBrief(); subscribeMsgs();
+  subscribeWeek(); subscribeBrief(); subscribeMsgs(); watchMyClock(); subscribePunches();
+  setInterval(tickLive, 20000);
 }
 /* one-time move from the old "staff cards" to approved accounts */
 let migrating = false;

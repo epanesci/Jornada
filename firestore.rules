@@ -92,5 +92,63 @@ service cloud.firestore {
         allow delete: if isMember() && resource.data.author == me();
       }
     }
+
+    // ---- Time tracking ----
+    // clock/{uid}: which record is open for each person (one at a time).
+    match /clock/{uid} {
+      allow read: if isMember() && (uid == me() || isAdmin());
+      allow write: if isAdmin() || (uid == me() && isMember() && request.resource.data.keys().hasOnly(['open', 'at']) && (
+        // checking in: nothing open before, and the new record is created in the same step
+        (request.resource.data.open is string
+          && (resource == null || resource.data.open == null
+              || get(/databases/$(database)/documents/punches/$(resource.data.open)).data.outAt != null)
+          && !exists(/databases/$(database)/documents/punches/$(request.resource.data.open))
+          && getAfter(/databases/$(database)/documents/punches/$(request.resource.data.open)).data.uid == me())
+        ||
+        // checking out: the open record gets its check-out in the same step
+        (request.resource.data.open == null && resource != null && resource.data.open is string
+          && getAfter(/databases/$(database)/documents/punches/$(resource.data.open)).data.outAt != null)
+      ));
+    }
+
+    // punches/{id}: one record per check-in. Employees can only create (time = server time) and
+    // close their own open record (time = server time). Only managers can change anything else,
+    // and every manager change must add to the history. Nobody can delete a record.
+    match /punches/{pid} {
+      allow read: if isMember() && (resource.data.uid == me() || isAdmin());
+      allow create: if isMember() && (
+        (request.resource.data.uid == me()
+          && request.resource.data.keys().hasOnly(['uid', 'shiftId', 'day', 'week', 'inAt', 'outAt', 'status', 'approved', 'edits', 'manual', 'void', 'createdAt'])
+          && request.resource.data.inAt == request.time
+          && request.resource.data.createdAt == request.time
+          && request.resource.data.outAt == null
+          && request.resource.data.status == 'open'
+          && request.resource.data.approved == false
+          && request.resource.data.manual == false
+          && request.resource.data.void == false
+          && request.resource.data.edits.size() == 0
+          && getAfter(/databases/$(database)/documents/clock/$(me())).data.open == pid)
+        ||
+        (isAdmin() && request.resource.data.manual == true && request.resource.data.edits.size() >= 1)
+      );
+      allow update: if isMember() && (
+        (resource.data.uid == me()
+          && resource.data.outAt == null
+          && resource.data.approved == false
+          && resource.data.void == false
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['outAt', 'status'])
+          && request.resource.data.outAt == request.time
+          && request.resource.data.status == 'done'
+          && getAfter(/databases/$(database)/documents/clock/$(me())).data.open == null)
+        ||
+        (isAdmin()
+          && request.resource.data.uid == resource.data.uid
+          && request.resource.data.edits.size() >= resource.data.edits.size()
+          // changing times, break or removing a record must add a history entry
+          && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['inAt', 'outAt', 'breakMin', 'void'])
+              || request.resource.data.edits.size() > resource.data.edits.size()))
+      );
+      allow delete: if false;
+    }
   }
 }

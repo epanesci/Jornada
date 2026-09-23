@@ -1,0 +1,80 @@
+rules_version = '2';
+// Reglas de seguridad de Jornada. Cópialas enteras en Firebase > Firestore Database > Reglas.
+// - Solo entran personas con sesión iniciada.
+// - La primera persona que pulsa «Ser el administrador» queda como administrador principal.
+// - Solo los gestores cambian equipo, turnos y briefing.
+// - Todos pueden usar los canales; los mensajes directos solo los leen sus dos participantes.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function me() { return request.auth.uid; }
+    function isAdmin() { return signedIn() && exists(/databases/$(database)/documents/admins/$(me())); }
+    function ownerId() { return get(/databases/$(database)/documents/meta/setup).data.owner; }
+
+    match /meta/setup {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.owner == me()
+        && existsAfter(/databases/$(database)/documents/admins/$(me()));
+    }
+
+    match /admins/{uid} {
+      allow read: if signedIn();
+      allow create: if isAdmin()
+        || (uid == me()
+            && !exists(/databases/$(database)/documents/meta/setup)
+            && getAfter(/databases/$(database)/documents/meta/setup).data.owner == me());
+      allow delete: if isAdmin() && uid != ownerId();
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow write: if signedIn() && uid == me();
+    }
+
+    match /staff/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+    match /shifts/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+    match /briefings/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /channels/{cid} {
+      allow read, create, update: if signedIn();
+      allow delete: if isAdmin();
+      match /messages/{mid} {
+        allow read: if signedIn();
+        allow create: if signedIn()
+          && request.resource.data.author == me()
+          && request.resource.data.text is string
+          && request.resource.data.text.size() <= 4000;
+        allow delete: if signedIn() && (resource.data.author == me() || isAdmin());
+      }
+    }
+
+    match /dms/{did} {
+      allow read: if signedIn() && me() in resource.data.members;
+      allow create: if signedIn()
+        && me() in request.resource.data.members
+        && request.resource.data.members.size() == 2;
+      allow update: if signedIn()
+        && me() in resource.data.members
+        && request.resource.data.members == resource.data.members;
+      match /messages/{mid} {
+        function member() { return me() in get(/databases/$(database)/documents/dms/$(did)).data.members; }
+        allow read: if signedIn() && member();
+        allow create: if signedIn() && member()
+          && request.resource.data.author == me()
+          && request.resource.data.text is string
+          && request.resource.data.text.size() <= 4000;
+        allow delete: if signedIn() && resource.data.author == me();
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 // Jornada — permite instalar la app y abrirla aunque la conexión sea mala.
-const CACHE = "jornada-v2";
+const CACHE = "jornada-v3";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./firebase-config.js",
   "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 

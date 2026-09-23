@@ -1,8 +1,8 @@
 {
   "name": "Jornada",
   "short_name": "Jornada",
-  "description": "Turnos, briefing del día y mensajes del equipo.",
-  "lang": "es",
+  "description": "Shifts, daily briefing and team messages.",
+  "lang": "en",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Jornada">
-<meta name="description" content="Turnos, briefing del día y mensajes del equipo.">
+<meta name="description" content="Shifts, daily briefing and team messages.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -358,32 +358,32 @@ table.list{border-collapse:collapse;width:100%;min-width:620px}
 </head>
 <body>
 
-<div class="auth" id="boot"><p class="muted">Cargando…</p></div>
+<div class="auth" id="boot"><p class="muted">Loading…</p></div>
 
 <div class="auth" id="cfg" hidden>
   <div class="auth-card">
     <img class="logo" src="icon-192.png" alt="">
-    <h1>Falta conectar Firebase</h1>
-    <p class="muted" style="margin:0">Abre el archivo <span class="code">firebase-config.js</span> y pega los datos de tu proyecto de Firebase (paso 1 de la guía <span class="code">LEEME.md</span>). Después vuelve a subir los archivos.</p>
+    <h1>Firebase isn't connected yet</h1>
+    <p class="muted" style="margin:0">Open <span class="code">firebase-config.js</span> and paste your Firebase project settings (step 1 of the guide). Then upload the files again.</p>
   </div>
 </div>
 
 <div class="auth" id="auth" hidden>
   <div class="auth-card">
     <img class="logo" src="icon-192.png" alt="">
-    <div><h1>Jornada</h1><p class="muted" style="margin:4px 0 0">Turnos, briefing y mensajes de tu equipo.</p></div>
-    <button class="btn" id="g-btn" type="button"><svg class="gmark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.1C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.6 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.2 0-11.5-4.1-13.4-9.9l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg>Entrar con Google</button>
-    <div class="or">o con tu correo</div>
+    <div><h1>Jornada</h1><p class="muted" style="margin:4px 0 0">Shifts, briefing and messages for your team.</p></div>
+    <button class="btn" id="g-btn" type="button"><svg class="gmark" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.1C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.6 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.2 0-11.5-4.1-13.4-9.9l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg>Sign in with Google</button>
+    <div class="or">or with your email</div>
     <form id="auth-form" novalidate>
-      <div class="field" id="name-field" hidden><label for="a-name">Tu nombre</label><input id="a-name" autocomplete="name" maxlength="60"></div>
-      <div class="field"><label for="a-email">Correo</label><input id="a-email" type="email" autocomplete="email" required></div>
-      <div class="field"><label for="a-pass">Contraseña</label><input id="a-pass" type="password" autocomplete="current-password" minlength="6" required></div>
-      <button class="btn primary" type="submit" id="a-submit">Entrar</button>
+      <div class="field" id="name-field" hidden><label for="a-name">Your name</label><input id="a-name" autocomplete="name" maxlength="60"></div>
+      <div class="field"><label for="a-email">Email</label><input id="a-email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="a-pass">Password</label><input id="a-pass" type="password" autocomplete="current-password" minlength="6" required></div>
+      <button class="btn primary" type="submit" id="a-submit">Sign in</button>
     </form>
     <p class="auth-err" id="a-err" role="alert"></p>
     <div class="auth-links">
-      <button type="button" class="linkbtn" id="a-toggle">¿Primera vez? Crear cuenta</button>
-      <button type="button" class="linkbtn" id="a-reset">Olvidé mi contraseña</button>
+      <button type="button" class="linkbtn" id="a-toggle">First time? Create account</button>
+      <button type="button" class="linkbtn" id="a-reset">Forgot password</button>
     </div>
   </div>
 </div>
@@ -392,14 +392,14 @@ table.list{border-collapse:collapse;width:100%;min-width:620px}
   <header class="top">
     <div class="brand"><h1>Jornada</h1><span class="today" id="today"></span></div>
     <span class="chip" id="role" hidden></span>
-    <button class="acct" id="acct" aria-label="Mi cuenta" hidden><img id="acct-img" alt=""></button>
+    <button class="acct" id="acct" aria-label="My account" hidden><img id="acct-img" alt=""></button>
   </header>
   <nav class="tabs" role="tablist" id="tabs">
-    <button class="tab" role="tab" data-view="today" id="tab-today"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span><span>Hoy</span></button>
-    <button class="tab" role="tab" data-view="schedule" id="tab-schedule"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg></span><span>Horario</span></button>
+    <button class="tab" role="tab" data-view="today" id="tab-today"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span><span>Today</span></button>
+    <button class="tab" role="tab" data-view="schedule" id="tab-schedule"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg></span><span>Schedule</span></button>
     <button class="tab" role="tab" data-view="briefing" id="tab-briefing"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14.5 3v4.5H19M9 12h7M9 16h5"/></svg></span><span>Briefing</span></button>
-    <button class="tab" role="tab" data-view="messages" id="tab-messages"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><span class="badge" id="unread" hidden>0</span></span><span>Mensajes</span></button>
-    <button class="tab" role="tab" data-view="team" id="tab-team"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.8a3.3 3.3 0 0 1 0 6.4M18 14.8c2 .7 3.2 2.4 3.5 5.2"/></svg></span><span>Equipo</span></button>
+    <button class="tab" role="tab" data-view="messages" id="tab-messages"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><span class="badge" id="unread" hidden>0</span></span><span>Messages</span></button>
+    <button class="tab" role="tab" data-view="team" id="tab-team"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.8a3.3 3.3 0 0 1 0 6.4M18 14.8c2 .7 3.2 2.4 3.5 5.2"/></svg></span><span>Team</span></button>
   </nav>
   <div id="banner"></div>
   <main id="view"></main>
@@ -443,9 +443,9 @@ const todayISO = () => iso(new Date());
 const mins = t => { const [a, b] = (t || "0:0").split(":").map(Number); return a * 60 + b; };
 const shiftSpan = s => { const a = mins(s.start); let b = mins(s.end); if (b <= a) b += 1440; return [a, b]; };
 const shiftHours = s => { const [a, b] = shiftSpan(s); return Math.max(0, b - a - (+s.breakMin || 0)) / 60; };
-const fmtH = x => (Math.round(x * 10) / 10).toLocaleString("es-ES") + " h";
-const DOW = ["L", "M", "X", "J", "V", "S", "D"];
-const fmtDay = (s, o) => parse(s).toLocaleDateString("es-ES", o);
+const fmtH = x => (Math.round(x * 10) / 10).toLocaleString("en-GB") + " h";
+const DOW = ["M", "T", "W", "T", "F", "S", "S"];
+const fmtDay = (s, o) => parse(s).toLocaleDateString("en-GB", o);
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 const initials = n => (n || "?").trim().split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase();
 const PALETTE = ["#2E6B5A", "#3B63A8", "#B0543A", "#7A4FA0", "#AD861A", "#2B8A98", "#A3416E", "#5E6D2C"];
@@ -480,18 +480,18 @@ const store = {
 };
 function dbError(e) {
   if (!S.me) return;
-  if (e && e.code === "permission-denied") console.warn("Sin permiso:", e.message);
-  else if (e && e.code === "resource-exhausted") toast("Se alcanzó el límite gratuito de Firebase por hoy.");
+  if (e && e.code === "permission-denied") console.warn("No permission:", e.message);
+  else if (e && e.code === "resource-exhausted") toast("Firebase's free daily limit has been reached.");
 }
 async function safe(p, okMsg) {
   try { await p; if (okMsg) toast(okMsg); return true; }
   catch (e) {
     const c = e && e.code;
     console.warn(e);
-    toast(c === "permission-denied" ? "No tienes permiso para cambiar esto." :
-          c === "resource-exhausted" ? "Se alcanzó el límite gratuito de Firebase por hoy." :
-          c === "unavailable" ? "Sin conexión. Se guardará cuando vuelva internet." :
-          "No se pudo guardar. Inténtalo de nuevo.");
+    toast(c === "permission-denied" ? "You don't have permission to change this." :
+          c === "resource-exhausted" ? "Firebase's free daily limit has been reached." :
+          c === "unavailable" ? "You're offline. It will save when you're back online." :
+          "Couldn't save. Please try again.");
     return false;
   }
 }
@@ -510,7 +510,7 @@ let narrow = mq.matches;
 mq.addEventListener("change", e => { narrow = e.matches; render(); });
 const myStaff = () => (S.me && S.me.id) ? S.staff.find(p => p.userId === S.me.id) : null;
 const staffById = () => Object.fromEntries(S.staff.map(p => [p.id, p]));
-const sortedStaff = () => [...S.staff].sort((a, b) => (a.name || "").localeCompare(b.name || "", "es"));
+const sortedStaff = () => [...S.staff].sort((a, b) => (a.name || "").localeCompare(b.name || "", "en"));
 const mayEditSchedule = () => S.canEdit && !S.readonly;
 const mayChat = () => !S.readonly && (!S.live || !!(S.me && S.me.id)) && S.canWrite !== false;
 
@@ -562,23 +562,23 @@ function avatarFor(uid) {
 }
 const nameOf = uid => (S.users[uid] && S.users[uid].name) || "";
 function fillPeople(root) {
-  root.querySelectorAll("[data-uid]").forEach(el => { el.textContent = nameOf(el.dataset.uid) || el.dataset.fallback || "Alguien"; });
+  root.querySelectorAll("[data-uid]").forEach(el => { el.textContent = nameOf(el.dataset.uid) || el.dataset.fallback || "Someone"; });
   root.querySelectorAll("[data-avuid]").forEach(el => { el.src = avatarFor(el.dataset.avuid); el.referrerPolicy = "no-referrer"; });
 }
 const BLANK = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='34' height='34'><circle cx='17' cy='17' r='17' fill='%23889'/></svg>";
 
 /* ---------- shell ---------- */
 function renderShell() {
-  $("#today").textContent = cap(new Date().toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" }));
+  $("#today").textContent = cap(new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }));
   const role = $("#role");
-  if (S.ready) { role.hidden = false; role.textContent = S.canEdit ? "Gestor" : "Equipo"; role.className = "chip" + (S.canEdit ? " live" : ""); }
+  if (S.ready) { role.hidden = false; role.textContent = S.canEdit ? "Manager" : "Team"; role.className = "chip" + (S.canEdit ? " live" : ""); }
   const acct = $("#acct");
   if (S.me) { acct.hidden = false; $("#acct-img").src = avatarFor(S.me.id); $("#acct-img").referrerPolicy = "no-referrer"; }
   document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.view === S.view)));
   const banner = $("#banner"); banner.replaceChildren();
   if (S.ready && S.setup === null) banner.append(h("div", { class: "notice info" },
-    h("span", { style: "flex:1;min-width:220px" }, h("b", null, "Esta app aún no tiene administrador. "), "Si eres el responsable del equipo, pulsa el botón: serás el gestor principal y podrás dar permisos a otros."),
-    h("button", { class: "btn primary", onclick: claimOwner }, "Ser el administrador")));
+    h("span", { style: "flex:1;min-width:220px" }, h("b", null, "This app has no administrator yet. "), "If you run the team, tap the button: you'll become the main manager and can give permissions to others."),
+    h("button", { class: "btn primary", onclick: claimOwner }, "Become administrator")));
   updateUnread();
 }
 function updateUnread() {
@@ -614,21 +614,21 @@ function viewSchedule() {
   const step = S.mode === "week" ? 7 : 1;
   const wrap = h("section", { style: "display:flex;flex-direction:column;gap:12px" });
   const tb = h("div", { class: "toolbar" },
-    h("button", { class: "btn icon-btn", "aria-label": "Anterior", onclick: () => setDate(addDays(S.date, -step)) }, "‹"),
-    h("button", { class: "btn icon-btn", "aria-label": "Siguiente", onclick: () => setDate(addDays(S.date, step)) }, "›"),
-    h("button", { class: "btn", onclick: () => setDate(todayISO()) }, "Hoy"),
+    h("button", { class: "btn icon-btn", "aria-label": "Previous", onclick: () => setDate(addDays(S.date, -step)) }, "‹"),
+    h("button", { class: "btn icon-btn", "aria-label": "Next", onclick: () => setDate(addDays(S.date, step)) }, "›"),
+    h("button", { class: "btn", onclick: () => setDate(todayISO()) }, "Today"),
     h("span", { class: "label", text: weekLabel }),
     h("span", { class: "spacer" }),
-    h("div", { class: "seg", role: "group", "aria-label": "Vista" },
-      h("button", { "aria-pressed": String(S.mode === "week"), onclick: () => { S.mode = "week"; lsSet("jornada-mode", "week"); render(); } }, "Semana"),
-      h("button", { "aria-pressed": String(S.mode === "day"), onclick: () => { S.mode = "day"; lsSet("jornada-mode", "day"); render(); } }, "Día")),
+    h("div", { class: "seg", role: "group", "aria-label": "View" },
+      h("button", { "aria-pressed": String(S.mode === "week"), onclick: () => { S.mode = "week"; lsSet("jornada-mode", "week"); render(); } }, "Week"),
+      h("button", { "aria-pressed": String(S.mode === "day"), onclick: () => { S.mode = "day"; lsSet("jornada-mode", "day"); render(); } }, "Day")),
     mayEditSchedule() && S.mode === "week" ? copyWeekBtn(mon) : null,
-    mayEditSchedule() ? h("button", { class: "btn primary", onclick: () => openShift({ date: S.mode === "day" ? S.date : (days.includes(todayISO()) ? todayISO() : mon) }) }, "+ Turno") : null
+    mayEditSchedule() ? h("button", { class: "btn primary", onclick: () => openShift({ date: S.mode === "day" ? S.date : (days.includes(todayISO()) ? todayISO() : mon) }) }, "+ Shift") : null
   );
   wrap.append(tb);
   if (!S.staff.length && S.ready) wrap.append(h("div", { class: "notice info" },
-    "Aún no hay nadie en el equipo. ",
-    mayEditSchedule() ? h("button", { class: "btn", onclick: () => openStaff({}) }, "Añadir persona") : "Pide a un gestor que añada al equipo."));
+    "There's nobody on the team yet. ",
+    mayEditSchedule() ? h("button", { class: "btn", onclick: () => openStaff({}) }, "Add person") : "Ask a manager to add the team."));
   wrap.append(S.mode === "week" ? weekGrid(days) : dayTimeline(S.date));
   return wrap;
 }
@@ -644,52 +644,52 @@ function agenda() {
     const p = known[s.staffId];
     return h("button", { class: "acard" + (p ? "" : " open") + (mine && s.staffId === mine.id ? " mine" : ""), style: `--c:${p ? p.color : "var(--ink-3)"}`, onclick: () => openShift(s) },
       h("span", { class: "bar" }),
-      h("div", { style: "min-width:0" }, h("div", { class: "nm", text: p ? p.name : "Turno libre" }), h("div", { class: "ps", text: [s.position, s.note].filter(Boolean).join(" · ") })),
+      h("div", { style: "min-width:0" }, h("div", { class: "nm", text: p ? p.name : "Open shift" }), h("div", { class: "ps", text: [s.position, s.note].filter(Boolean).join(" · ") })),
       h("div", null, h("div", { class: "tm" }, `${s.start}–${s.end}`), h("div", { class: "hr" }, fmtH(shiftHours(s)))));
   };
   const b = S.date === today ? todayBrief : S.briefing;
   return h("section", { style: "display:flex;flex-direction:column;gap:12px" },
     h("div", { class: "toolbar" },
-      h("button", { class: "btn icon-btn", "aria-label": "Semana anterior", onclick: () => setDate(addDays(S.date, -7)) }, "‹"),
+      h("button", { class: "btn icon-btn", "aria-label": "Previous week", onclick: () => setDate(addDays(S.date, -7)) }, "‹"),
       h("span", { class: "label", text: label }),
-      h("button", { class: "btn icon-btn", "aria-label": "Semana siguiente", onclick: () => setDate(addDays(S.date, 7)) }, "›"),
-      h("button", { class: "btn", onclick: () => setDate(today) }, "Hoy")),
+      h("button", { class: "btn icon-btn", "aria-label": "Next week", onclick: () => setDate(addDays(S.date, 7)) }, "›"),
+      h("button", { class: "btn", onclick: () => setDate(today) }, "Today")),
     h("div", { class: "strip" }, days.map((d, i) => {
       let n = S.shifts.filter(s => s.date === d); if (S.onlyMine && mine) n = n.filter(s => s.staffId === mine.id);
       return h("button", { class: "daychip" + (d === today ? " is-today" : ""), "aria-pressed": String(d === S.date), onclick: () => setDate(d) },
         h("small", null, DOW[i]), h("b", null, parse(d).getDate()), h("i", { class: n.length ? "on" : "" }));
     })),
-    mine ? h("div", { class: "seg", role: "group", "aria-label": "Filtro", style: "align-self:flex-start" },
-      h("button", { "aria-pressed": String(!S.onlyMine), onclick: () => { S.onlyMine = false; render(); } }, "Todo el equipo"),
-      h("button", { "aria-pressed": String(S.onlyMine), onclick: () => { S.onlyMine = true; render(); } }, "Mis turnos")) : null,
-    h("div", { class: "sec-label" }, cap(fmtDay(S.date, { weekday: "long", day: "numeric", month: "long" })), " · ", `${list.length} ${list.length === 1 ? "turno" : "turnos"}`),
-    list.length ? h("div", { class: "alist" }, assigned.map(card), open.map(card)) : h("div", { class: "empty" }, h("b", null, "Sin turnos este día"), ed ? "Pulsa + para añadir uno." : ""),
-    b && b.text ? h("button", { class: "btn", style: "align-self:flex-start", onclick: () => go("briefing") }, "Ver briefing del día") : null,
-    ed ? h("button", { class: "fab", "aria-label": "Nuevo turno", onclick: () => openShift({ date: S.date }) }, "+") : null);
+    mine ? h("div", { class: "seg", role: "group", "aria-label": "Filter", style: "align-self:flex-start" },
+      h("button", { "aria-pressed": String(!S.onlyMine), onclick: () => { S.onlyMine = false; render(); } }, "Whole team"),
+      h("button", { "aria-pressed": String(S.onlyMine), onclick: () => { S.onlyMine = true; render(); } }, "My shifts")) : null,
+    h("div", { class: "sec-label" }, cap(fmtDay(S.date, { weekday: "long", day: "numeric", month: "long" })), " · ", `${list.length} ${list.length === 1 ? "shift" : "shifts"}`),
+    list.length ? h("div", { class: "alist" }, assigned.map(card), open.map(card)) : h("div", { class: "empty" }, h("b", null, "No shifts this day"), ed ? "Tap + to add one." : ""),
+    b && b.text ? h("button", { class: "btn", style: "align-self:flex-start", onclick: () => go("briefing") }, "View today's briefing") : null,
+    ed ? h("button", { class: "fab", "aria-label": "New shift", onclick: () => openShift({ date: S.date }) }, "+") : null);
 }
 
 /* HOY */
 function viewToday() {
   const t = todayISO(), hr = new Date().getHours(), known = staffById(), mine = myStaff();
-  const hello = hr < 13 ? "Buenos días" : hr < 20 ? "Buenas tardes" : "Buenas noches";
-  const first = S.me && S.me.name ? " " + S.me.name.split(" ")[0] : "";
+  const hello = hr < 13 ? "Good morning" : hr < 20 ? "Good afternoon" : "Good evening";
+  const first = S.me && S.me.name ? ", " + S.me.name.split(" ")[0] : "";
   const nowM = new Date().getHours() * 60 + new Date().getMinutes();
   const upcoming = myUpcoming.filter(s => !(s.date === t && shiftSpan(s)[1] < nowM)).sort((a, b) => a.date === b.date ? mins(a.start) - mins(b.start) : a.date < b.date ? -1 : 1);
-  const whenLabel = d => d === t ? "Hoy" : d === addDays(t, 1) ? "Mañana" : cap(fmtDay(d, { weekday: "long", day: "numeric" }));
+  const whenLabel = d => d === t ? "Today" : d === addDays(t, 1) ? "Tomorrow" : cap(fmtDay(d, { weekday: "long", day: "numeric" }));
   let nextCard;
   if (mine && upcoming.length) {
     const n = upcoming[0];
-    nextCard = h("div", { class: "panel next" }, h("h3", null, "Tu próximo turno"),
+    nextCard = h("div", { class: "panel next" }, h("h3", null, "Your next shift"),
       h("div", { class: "when", text: whenLabel(n.date) }),
       h("div", { class: "big" }, `${n.start}–${n.end}`),
       h("div", { class: "sub", text: [n.position, fmtH(shiftHours(n)), n.note].filter(Boolean).join(" · ") }),
       upcoming.length > 1 ? h("ul", { class: "upcoming" }, upcoming.slice(1, 5).map(s => h("li", null, h("span", { text: whenLabel(s.date) }), h("span", { class: "tm" }, `${s.start}–${s.end}`)))) : null);
   } else if (mine) {
-    nextCard = h("div", { class: "panel" }, h("h3", null, "Tu próximo turno"), h("p", { class: "muted", style: "margin:0" }, "No tienes turnos programados."));
+    nextCard = h("div", { class: "panel" }, h("h3", null, "Your next shift"), h("p", { class: "muted", style: "margin:0" }, "You have no upcoming shifts."));
   } else if (S.live) {
-    nextCard = h("div", { class: "panel" }, h("h3", null, "Tus turnos"), h("p", { class: "muted", style: "margin:0 0 10px" },
-      S.canEdit ? "Vincula tu cuenta a tu ficha en Equipo para ver aquí tus próximos turnos." : "Pide a tu gestor que vincule tu cuenta en Equipo para ver aquí tus próximos turnos."),
-      S.canEdit ? h("button", { class: "btn", onclick: () => go("team") }, "Ir a Equipo") : null);
+    nextCard = h("div", { class: "panel" }, h("h3", null, "Your shifts"), h("p", { class: "muted", style: "margin:0 0 10px" },
+      S.canEdit ? "Link your account to your profile in Team to see your upcoming shifts here." : "Ask your manager to link your account in Team to see your upcoming shifts here."),
+      S.canEdit ? h("button", { class: "btn", onclick: () => go("team") }, "Go to Team") : null);
   }
   const working = todayShifts.slice().sort((a, b) => mins(a.start) - mins(b.start));
   const unread = visibleChannels().filter(isUnread);
@@ -698,47 +698,47 @@ function viewToday() {
   if (!standalone && !lsGet("jornada-tip") && (installPrompt || narrow)) {
     const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
     tip = h("div", { class: "notice info" },
-      h("span", { style: "flex:1;min-width:200px" }, installPrompt ? "Instala Jornada en este dispositivo para abrirla como una app." :
-        ios ? "Instálala en tu iPhone: toca el botón Compartir de Safari y elige «Añadir a pantalla de inicio»." :
-        "Instálala: abre el menú ⋮ del navegador y elige «Instalar app» o «Añadir a pantalla de inicio»."),
-      installPrompt ? h("button", { class: "btn primary", onclick: async () => { installPrompt.prompt(); try { await installPrompt.userChoice; } catch {} installPrompt = null; render(); } }, "Instalar") : null,
-      h("button", { class: "btn ghost", onclick: e => { lsSet("jornada-tip", 1); e.target.closest(".notice").remove(); } }, "Ahora no"));
+      h("span", { style: "flex:1;min-width:200px" }, installPrompt ? "Install Jornada on this device to open it like an app." :
+        ios ? "Install it on your iPhone: tap Safari's Share button and choose “Add to Home Screen”." :
+        "Install it: open the browser's ⋮ menu and choose “Install app” or “Add to Home screen”."),
+      installPrompt ? h("button", { class: "btn primary", onclick: async () => { installPrompt.prompt(); try { await installPrompt.userChoice; } catch {} installPrompt = null; render(); } }, "Install") : null,
+      h("button", { class: "btn ghost", onclick: e => { lsSet("jornada-tip", 1); e.target.closest(".notice").remove(); } }, "Not now"));
   }
   return h("section", { style: "display:flex;flex-direction:column;gap:14px" },
-    h("div", null, h("h2", { class: "hello" }, hello + first), h("p", { class: "hello-sub" }, cap(new Date().toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" })))),
+    h("div", null, h("h2", { class: "hello" }, hello + first), h("p", { class: "hello-sub" }, cap(new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })))),
     tip,
     h("div", { class: "today-grid" },
       nextCard,
-      h("div", { class: "panel" }, h("h3", null, "Briefing de hoy"),
-        todayBrief && todayBrief.text && todayBrief.text.trim() ? h("p", { class: "excerpt", text: todayBrief.text.trim() }) : h("p", { class: "muted", style: "margin:0 0 10px" }, "Todavía no hay briefing para hoy."),
-        h("button", { class: "btn", onclick: () => { setDateQuiet(t); go("briefing"); } }, todayBrief && todayBrief.text ? "Leer completo" : (mayEditSchedule() ? "Escribir briefing" : "Abrir briefing"))),
-      h("div", { class: "panel" }, h("h3", null, "Hoy trabajan", h("small", null, `${working.length} · ${fmtH(working.reduce((a, s) => a + shiftHours(s), 0))}`)),
+      h("div", { class: "panel" }, h("h3", null, "Today's briefing"),
+        todayBrief && todayBrief.text && todayBrief.text.trim() ? h("p", { class: "excerpt", text: todayBrief.text.trim() }) : h("p", { class: "muted", style: "margin:0 0 10px" }, "No briefing for today yet."),
+        h("button", { class: "btn", onclick: () => { setDateQuiet(t); go("briefing"); } }, todayBrief && todayBrief.text ? "Read it all" : (mayEditSchedule() ? "Write briefing" : "Open briefing"))),
+      h("div", { class: "panel" }, h("h3", null, "Working today", h("small", null, `${working.length} · ${fmtH(working.reduce((a, s) => a + shiftHours(s), 0))}`)),
         working.length ? h("ul", { class: "onshift" }, working.map(s => {
           const p = known[s.staffId], [a, b] = shiftSpan(s), on = nowM >= a && nowM < b;
           return h("li", { style: `--c:${p ? p.color : "var(--ink-3)"}` }, h("span", { class: "sw" }),
-            h("div", null, h("div", null, p ? p.name : "Turno libre", on ? h("span", { class: "now-chip" }, "Ahora") : null), s.position ? h("div", { class: "ps", text: s.position }) : null),
+            h("div", null, h("div", null, p ? p.name : "Open shift", on ? h("span", { class: "now-chip" }, "Now") : null), s.position ? h("div", { class: "ps", text: s.position }) : null),
             h("span", { class: "tm" }, `${s.start}–${s.end}`));
-        })) : h("p", { class: "muted", style: "margin:0" }, "Nadie tiene turno hoy.")),
-      h("div", { class: "panel" }, h("h3", null, "Mensajes"),
-        h("p", { class: "muted", style: "margin:0 0 10px" }, unread.length ? `Tienes mensajes nuevos en ${unread.length} ${unread.length === 1 ? "conversación" : "conversaciones"}.` : "Estás al día."),
-        h("button", { class: "btn", onclick: () => go("messages") }, "Abrir mensajes"))));
+        })) : h("p", { class: "muted", style: "margin:0" }, "Nobody has a shift today.")),
+      h("div", { class: "panel" }, h("h3", null, "Messages"),
+        h("p", { class: "muted", style: "margin:0 0 10px" }, unread.length ? `New messages in ${unread.length} ${unread.length === 1 ? "conversation" : "conversations"}.` : "You're all caught up."),
+        h("button", { class: "btn", onclick: () => go("messages") }, "Open messages"))));
 }
 function setDateQuiet(d) { S.date = d; subscribeWeek(); subscribeBrief(); }
 
 function copyWeekBtn(mon) {
-  const b = h("button", { class: "btn" }, "Copiar semana anterior");
+  const b = h("button", { class: "btn" }, "Copy last week");
   let armed = null;
   b.onclick = async () => {
     if (!armed) {
       const prev = await store.get("shifts", { where: [["date", ">=", addDays(mon, -7)], ["date", "<=", addDays(mon, -1)]] });
-      if (!prev.length) { toast("La semana anterior no tiene turnos."); return; }
-      armed = prev; b.classList.add("primary"); b.textContent = `Añadir ${prev.length} turnos`;
-      setTimeout(() => { if (b.isConnected && armed) { armed = null; b.classList.remove("primary"); b.textContent = "Copiar semana anterior"; } }, 5000);
+      if (!prev.length) { toast("Last week has no shifts."); return; }
+      armed = prev; b.classList.add("primary"); b.textContent = `Add ${prev.length} shifts`;
+      setTimeout(() => { if (b.isConnected && armed) { armed = null; b.classList.remove("primary"); b.textContent = "Copy last week"; } }, 5000);
       return;
     }
     const rows = armed; armed = null; b.disabled = true;
     for (const r of rows) { const { id, example, ...d } = r; await safe(store.add("shifts", { ...d, date: addDays(d.date, 7) })); }
-    toast(`${rows.length} turnos copiados`);
+    toast(`${rows.length} shifts copied`);
   };
   return b;
 }
@@ -747,7 +747,7 @@ function staffRowHead(p) {
   return h("div", { class: "person" },
     h("span", { class: "av", style: `background:${p.color || PALETTE[0]}` }, initials(p.name)),
     h("div", { style: "min-width:0" },
-      h("div", { class: "nm" }, p.name || "Sin nombre", mine ? h("span", { class: "you" }, "Tú") : null),
+      h("div", { class: "nm" }, p.name || "No name", mine ? h("span", { class: "you" }, "You") : null),
       h("div", { class: "rl", text: p.role || "" })));
 }
 function shiftChip(s, color) {
@@ -770,10 +770,10 @@ function weekGrid(days) {
   const tbl = h("table", { class: "week" },
     h("colgroup", null, h("col", { class: "c-staff" }), days.map(() => h("col")), h("col", { class: "c-total" })),
     h("thead", null, h("tr", null,
-      h("th", null, "Equipo"),
+      h("th", null, "Team"),
       days.map((d, i) => h("th", { class: d === today ? "is-today" : null, style: "cursor:pointer", onclick: () => { S.mode = "day"; lsSet("jornada-mode", "day"); setDate(d); } },
         DOW[i] + " ", h("span", { class: "d", text: parse(d).getDate() }))),
-      h("th", { style: "text-align:right" }, "Horas"))),
+      h("th", { style: "text-align:right" }, "Hours"))),
     h("tbody", null,
       sortedStaff().map(p => {
         const list = byStaff[p.id] || [];
@@ -783,16 +783,16 @@ function weekGrid(days) {
         return h("tr", { class: mine ? "mine" : null },
           h("td", null, staffRowHead(p)),
           days.map(d => cellFor(list, p.id, d, p.color || PALETTE[0])),
-          h("td", null, h("div", { class: "tot" + (over ? " over" : ""), title: p.contractHours ? `Contrato: ${p.contractHours} h` : "" },
-            fmtH(tot), p.contractHours ? h("div", { style: "font-size:11px;color:var(--ink-3)" }, "de " + p.contractHours) : null)));
+          h("td", null, h("div", { class: "tot" + (over ? " over" : ""), title: p.contractHours ? `Contract: ${p.contractHours} h` : "" },
+            fmtH(tot), p.contractHours ? h("div", { style: "font-size:11px;color:var(--ink-3)" }, "of " + p.contractHours) : null)));
       }),
       (open.length || ed) ? h("tr", { class: "row-open" },
-        h("td", null, h("div", { class: "person" }, h("span", { class: "av" }, "?"), h("div", null, h("div", { class: "nm" }, "Turnos libres"), h("div", { class: "rl" }, "Sin asignar")))),
+        h("td", null, h("div", { class: "person" }, h("span", { class: "av" }, "?"), h("div", null, h("div", { class: "nm" }, "Open shifts"), h("div", { class: "rl" }, "Unassigned")))),
         days.map(d => cellFor(open, "", d, "var(--ink-3)")),
         h("td", null, h("div", { class: "tot" }, fmtH(open.reduce((a, s) => a + shiftHours(s), 0))))) : null),
     h("tfoot", null, h("tr", null,
-      h("td", null, h("div", { class: "tot", style: "text-align:left" }, "Total día")),
-      days.map(d => { const l = S.shifts.filter(s => s.date === d); return h("td", null, h("div", { class: "tot" }, fmtH(l.reduce((a, s) => a + shiftHours(s), 0)), h("div", null, l.length + (l.length === 1 ? " turno" : " turnos")))); }),
+      h("td", null, h("div", { class: "tot", style: "text-align:left" }, "Day total")),
+      days.map(d => { const l = S.shifts.filter(s => s.date === d); return h("td", null, h("div", { class: "tot" }, fmtH(l.reduce((a, s) => a + shiftHours(s), 0)), h("div", null, l.length + (l.length === 1 ? " shift" : " shifts")))); }),
       h("td", null, h("div", { class: "tot", style: "color:var(--ink);font-weight:600" }, fmtH(S.shifts.reduce((a, s) => a + shiftHours(s), 0)))))));
   return h("div", { class: "grid-wrap" }, tbl);
 }
@@ -820,13 +820,13 @@ function dayTimeline(d) {
   const b = S.briefing;
   const wrap = h("div", { style: "display:flex;flex-direction:column;gap:12px" },
     h("div", { class: "day-brief" },
-      h("div", null, h("h3", null, "Briefing del día"), h("p", { text: (b && b.text && b.text.trim()) || "Sin briefing para este día todavía." })),
-      h("button", { class: "btn", onclick: () => go("briefing") }, (b && b.text) ? "Abrir briefing" : (mayEditSchedule() ? "Escribir briefing" : "Ver briefing"))),
+      h("div", null, h("h3", null, "Day's briefing"), h("p", { text: (b && b.text && b.text.trim()) || "No briefing for this day yet." })),
+      h("button", { class: "btn", onclick: () => go("briefing") }, (b && b.text) ? "Open briefing" : (mayEditSchedule() ? "Write briefing" : "View briefing"))),
     h("div", { class: "timeline" }, h("div", { class: "tl-inner" },
-      h("div", { class: "tl-row tl-head" }, h("div", { class: "person muted" }, `${list.length} ${list.length === 1 ? "turno" : "turnos"} · ${fmtH(list.reduce((a, s) => a + shiftHours(s), 0))}`), head),
+      h("div", { class: "tl-row tl-head" }, h("div", { class: "person muted" }, `${list.length} ${list.length === 1 ? "shift" : "shifts"} · ${fmtH(list.reduce((a, s) => a + shiftHours(s), 0))}`), head),
       rows.map(([p, l]) => h("div", { class: "tl-row" }, staffRowHead(p), track(l, p.color || PALETTE[0]))),
-      openL.length ? h("div", { class: "tl-row row-open" }, h("div", { class: "person" }, h("span", { class: "av" }, "?"), h("div", { class: "nm" }, "Turnos libres")), track(openL, "#8A9399")) : null,
-      !list.length ? h("div", { class: "empty" }, h("b", null, "Nadie trabaja este día"), mayEditSchedule() ? "Añade un turno con el botón + Turno." : "") : null)));
+      openL.length ? h("div", { class: "tl-row row-open" }, h("div", { class: "person" }, h("span", { class: "av" }, "?"), h("div", { class: "nm" }, "Open shifts")), track(openL, "#8A9399")) : null,
+      !list.length ? h("div", { class: "empty" }, h("b", null, "Nobody works this day"), mayEditSchedule() ? "Add a shift with the + Shift button." : "") : null)));
   return wrap;
 }
 
@@ -836,7 +836,7 @@ function openShift(s) {
   const positions = [...new Set([...S.shifts.map(x => x.position), ...S.staff.map(p => p.role)].filter(Boolean))];
   const mon = mondayOf(s.date || S.date);
   const staffSel = h("select", { id: "f-staff", disabled: !ed },
-    h("option", { value: "" }, "Turno libre (sin asignar)"),
+    h("option", { value: "" }, "Open shift (unassigned)"),
     sortedStaff().map(p => h("option", { value: p.id }, p.name)));
   staffSel.value = s.staffId && staffById()[s.staffId] ? s.staffId : "";
   const def = s.staffId && staffById()[s.staffId];
@@ -845,11 +845,11 @@ function openShift(s) {
     start: h("input", { id: "f-start", type: "time", step: "900", value: s.start || "09:00", disabled: !ed }),
     end: h("input", { id: "f-end", type: "time", step: "900", value: s.end || "17:00", disabled: !ed }),
     brk: h("input", { id: "f-break", type: "number", min: "0", step: "5", value: s.breakMin ?? 30, disabled: !ed }),
-    pos: h("input", { id: "f-pos", list: "pos-list", value: s.position || (isNew && def ? def.role || "" : ""), placeholder: "Barra, Sala, Cocina…", disabled: !ed }),
-    note: h("textarea", { id: "f-note", rows: "2", placeholder: "Opcional", disabled: !ed }, s.note || "")
+    pos: h("input", { id: "f-pos", list: "pos-list", value: s.position || (isNew && def ? def.role || "" : ""), placeholder: "Bar, Floor, Kitchen…", disabled: !ed }),
+    note: h("textarea", { id: "f-note", rows: "2", placeholder: "Optional", disabled: !ed }, s.note || "")
   };
   const sum = h("div", { class: "summary" });
-  const upd = () => { sum.textContent = `Duración: ${fmtH(shiftHours({ start: f.start.value, end: f.end.value, breakMin: f.brk.value }))} (descontando pausa)`; };
+  const upd = () => { sum.textContent = `Length: ${fmtH(shiftHours({ start: f.start.value, end: f.end.value, breakMin: f.brk.value }))} (minus break)`; };
   [f.start, f.end, f.brk].forEach(i => i.addEventListener("input", upd)); upd();
   staffSel.onchange = () => { const p = staffById()[staffSel.value]; if (p && p.role && !f.pos.value) f.pos.value = p.role; };
   let repeat = null;
@@ -860,41 +860,41 @@ function openShift(s) {
   }
   const save = async () => {
     const data = { staffId: staffSel.value, date: f.date.value, start: f.start.value, end: f.end.value, breakMin: Math.max(0, +f.brk.value || 0), position: f.pos.value.trim(), note: f.note.value.trim() };
-    if (!data.date || !data.start || !data.end) { toast("Completa fecha, inicio y fin."); return; }
+    if (!data.date || !data.start || !data.end) { toast("Fill in date, start and end."); return; }
     if (isNew) {
       const wk = mondayOf(data.date);
       const picked = repeat ? [...repeat.querySelectorAll("input")].map((c, i) => c.checked ? addDays(wk, i) : null).filter(Boolean) : [data.date];
       const dates = picked.length ? picked : [data.date];
       close();
       let ok = true; for (const d of dates) ok = (await safe(store.add("shifts", { ...data, date: d }))) && ok;
-      if (ok) toast(dates.length > 1 ? `${dates.length} turnos creados` : "Turno creado");
+      if (ok) toast(dates.length > 1 ? `${dates.length} shifts created` : "Shift created");
     } else {
       const { id, ...rest } = s; close();
-      await safe(store.set("shifts/" + s.id, { ...rest, ...data }), "Turno guardado");
+      await safe(store.set("shifts/" + s.id, { ...rest, ...data }), "Shift saved");
     }
   };
-  const del = h("button", { class: "btn danger left" }, "Eliminar");
+  const del = h("button", { class: "btn danger left" }, "Delete");
   del.onclick = async () => {
-    if (!del.classList.contains("armed")) { del.classList.add("armed"); del.textContent = "¿Eliminar? Confirmar"; return; }
-    close(); await safe(store.del("shifts/" + s.id), "Turno eliminado");
+    if (!del.classList.contains("armed")) { del.classList.add("armed"); del.textContent = "Delete? Confirm"; return; }
+    close(); await safe(store.del("shifts/" + s.id), "Shift deleted");
   };
   const close = modal(h("div", { class: "modal", role: "dialog", "aria-modal": "true", "aria-labelledby": "m-t" },
-    h("h2", { id: "m-t" }, isNew ? "Nuevo turno" : ed ? "Editar turno" : "Turno"),
+    h("h2", { id: "m-t" }, isNew ? "New shift" : ed ? "Edit shift" : "Shift"),
     h("datalist", { id: "pos-list" }, positions.map(p => h("option", { value: p }))),
-    h("div", { class: "field" }, h("label", { for: "f-staff" }, "Persona"), staffSel),
-    h("div", { class: "field" }, h("label", { for: "f-date" }, "Fecha"), f.date),
-    repeat ? h("div", { class: "field" }, h("label", null, "Repetir esta semana"), repeat) : null,
+    h("div", { class: "field" }, h("label", { for: "f-staff" }, "Person"), staffSel),
+    h("div", { class: "field" }, h("label", { for: "f-date" }, "Date"), f.date),
+    repeat ? h("div", { class: "field" }, h("label", null, "Repeat this week"), repeat) : null,
     h("div", { class: "row3" },
-      h("div", { class: "field" }, h("label", { for: "f-start" }, "Inicio"), f.start),
-      h("div", { class: "field" }, h("label", { for: "f-end" }, "Fin"), f.end),
-      h("div", { class: "field" }, h("label", { for: "f-break" }, "Pausa (min)"), f.brk)),
+      h("div", { class: "field" }, h("label", { for: "f-start" }, "Start"), f.start),
+      h("div", { class: "field" }, h("label", { for: "f-end" }, "End"), f.end),
+      h("div", { class: "field" }, h("label", { for: "f-break" }, "Break (min)"), f.brk)),
     sum,
-    h("div", { class: "field" }, h("label", { for: "f-pos" }, "Puesto"), f.pos),
-    h("div", { class: "field" }, h("label", { for: "f-note" }, "Nota"), f.note),
+    h("div", { class: "field" }, h("label", { for: "f-pos" }, "Position"), f.pos),
+    h("div", { class: "field" }, h("label", { for: "f-note" }, "Note"), f.note),
     h("div", { class: "actions" },
       !isNew && ed ? del : null,
-      h("button", { class: "btn ghost", onclick: () => close() }, ed ? "Cancelar" : "Cerrar"),
-      ed ? h("button", { class: "btn primary", onclick: save }, "Guardar") : null)));
+      h("button", { class: "btn ghost", onclick: () => close() }, ed ? "Cancel" : "Close"),
+      ed ? h("button", { class: "btn primary", onclick: save }, "Save") : null)));
 }
 
 function modal(node) {
@@ -912,45 +912,45 @@ function modal(node) {
 
 /* ---------- BRIEFING ---------- */
 let briefDirty = false, briefSaving = false;
-const TEMPLATE = "Objetivo del día\n- \n\nReservas y eventos\n- \n\nPersonal y puestos\n- \n\nAvisos importantes\n- \n\nPendientes de ayer\n- \n";
+const TEMPLATE = "Today's goal\n- \n\nBookings and events\n- \n\nStaff and positions\n- \n\nImportant notices\n- \n\nLeft over from yesterday\n- \n";
 function viewBriefing() {
   const ed = mayEditSchedule();
-  const ta = h("textarea", { id: "brief-text", readonly: !ed, "aria-label": "Briefing del día",
-    placeholder: ed ? "Escribe aquí el briefing del día: objetivos, reservas, avisos, puestos, pendientes…" : "El gestor aún no ha escrito el briefing de este día." });
+  const ta = h("textarea", { id: "brief-text", readonly: !ed, "aria-label": "Day's briefing",
+    placeholder: ed ? "Write today's briefing here: goals, bookings, notices, positions, to-dos…" : "The manager hasn't written a briefing for this day yet." });
   const status = h("span", { class: "saved", id: "brief-status" });
   const count = h("span", { class: "muted", id: "brief-count" });
   const myDate = S.date;
   const save = debounce(async () => {
-    briefSaving = true; status.textContent = "Guardando…"; status.className = "saved pending";
+    briefSaving = true; status.textContent = "Saving…"; status.className = "saved pending";
     const ok = await safe(store.set("briefings/" + myDate, { date: myDate, example: false, text: ta.value, updatedBy: (S.me && S.me.id) || null, updatedAt: Date.now() }));
     briefSaving = false; briefDirty = false;
-    status.textContent = ok ? "Guardado " + new Date().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" }) : "Sin guardar";
+    status.textContent = ok ? "Saved " + new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : "Not saved";
     status.className = ok ? "saved" : "saved pending";
   }, 900);
-  ta.addEventListener("input", () => { briefDirty = true; status.textContent = "Cambios sin guardar…"; status.className = "saved pending"; count.textContent = wc(ta.value); save(); });
-  const tpl = ed ? h("button", { class: "btn ghost", id: "tpl-btn", onclick: () => { if (ta.value.trim()) return; ta.value = TEMPLATE; ta.dispatchEvent(new Event("input")); ta.focus(); } }, "Usar plantilla") : null;
+  ta.addEventListener("input", () => { briefDirty = true; status.textContent = "Unsaved changes…"; status.className = "saved pending"; count.textContent = wc(ta.value); save(); });
+  const tpl = ed ? h("button", { class: "btn ghost", id: "tpl-btn", onclick: () => { if (ta.value.trim()) return; ta.value = TEMPLATE; ta.dispatchEvent(new Event("input")); ta.focus(); } }, "Use template") : null;
   return h("section", { style: "display:flex;flex-direction:column;gap:12px" },
     h("div", { class: "toolbar" },
-      h("button", { class: "btn icon-btn", "aria-label": "Día anterior", onclick: () => flushThen(() => setDate(addDays(S.date, -1))) }, "‹"),
-      h("button", { class: "btn icon-btn", "aria-label": "Día siguiente", onclick: () => flushThen(() => setDate(addDays(S.date, 1))) }, "›"),
-      h("button", { class: "btn", onclick: () => flushThen(() => setDate(todayISO())) }, "Hoy"),
+      h("button", { class: "btn icon-btn", "aria-label": "Previous day", onclick: () => flushThen(() => setDate(addDays(S.date, -1))) }, "‹"),
+      h("button", { class: "btn icon-btn", "aria-label": "Next day", onclick: () => flushThen(() => setDate(addDays(S.date, 1))) }, "›"),
+      h("button", { class: "btn", onclick: () => flushThen(() => setDate(todayISO())) }, "Today"),
       h("span", { class: "label", text: cap(fmtDay(S.date, narrow ? { weekday: "short", day: "numeric", month: "short" } : { weekday: "long", day: "numeric", month: "long", year: "numeric" })) }),
       narrow ? null : h("span", { class: "spacer" }),
-      narrow ? null : h("input", { type: "date", id: "brief-date", class: "btn", value: S.date, "aria-label": "Elegir fecha", onchange: e => e.target.value && flushThen(() => setDate(e.target.value)) })),
+      narrow ? null : h("input", { type: "date", id: "brief-date", class: "btn", value: S.date, "aria-label": "Pick a date", onchange: e => e.target.value && flushThen(() => setDate(e.target.value)) })),
     h("div", { class: "brief" },
       h("div", { class: "paper" },
         h("div", { class: "paper-head" }, h("span", { id: "brief-meta" }), h("span", { style: "display:flex;gap:12px;align-items:center" }, tpl, count, status)),
         ta),
       h("aside", { class: "side" },
         h("div", { class: "panel", id: "brief-shifts" }),
-        h("div", { class: "panel" }, h("h3", null, "Compartir con el equipo"),
-          h("p", { class: "muted", style: "margin:0 0 10px" }, "Avisa en #general de que el briefing está listo."),
+        h("div", { class: "panel" }, h("h3", null, "Share with the team"),
+          h("p", { class: "muted", style: "margin:0 0 10px" }, "Let #general know the briefing is ready."),
           h("button", { class: "btn", disabled: !mayChat(), onclick: async () => {
-            await safe(sendMessage("general", `📋 Briefing del ${fmtDay(S.date, { weekday: "long", day: "numeric", month: "long" })} publicado. Léelo en la pestaña Briefing.`), "Aviso enviado a #general");
-          } }, "Avisar en #general")))));
+            await safe(sendMessage("general", `📋 The briefing for ${fmtDay(S.date, { weekday: "long", day: "numeric", month: "long" })} is up. Read it in the Briefing tab.`), "Posted to #general");
+          } }, "Notify #general")))));
 }
 function flushThen(fn) { fn(); }
-const wc = t => { const n = (t.trim().match(/\S+/g) || []).length; return n + (n === 1 ? " palabra" : " palabras"); };
+const wc = t => { const n = (t.trim().match(/\S+/g) || []).length; return n + (n === 1 ? " word" : " words"); };
 function updateBrief(initial) {
   const ta = $("#brief-text"); if (!ta) return;
   const b = S.briefing;
@@ -964,21 +964,21 @@ function updateBrief(initial) {
   const tpl = $("#tpl-btn"); if (tpl) tpl.hidden = !!ta.value.trim();
   const meta = $("#brief-meta"); meta.replaceChildren();
   if (b && b.updatedAt) {
-    meta.append("Última edición ", new Date(b.updatedAt).toLocaleString("es-ES", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }));
-    if (b.updatedBy) { meta.append(" · "); meta.append(h("span", { "data-uid": b.updatedBy, "data-fallback": "gestor" })); fillPeople(meta); }
-  } else meta.textContent = "Aún sin escribir";
+    meta.append("Last edited ", new Date(b.updatedAt).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }));
+    if (b.updatedBy) { meta.append(" · "); meta.append(h("span", { "data-uid": b.updatedBy, "data-fallback": "manager" })); fillPeople(meta); }
+  } else meta.textContent = "Not written yet";
   // on shift today
   const panel = $("#brief-shifts");
   const list = S.shifts.filter(s => s.date === S.date).sort((a, b) => mins(a.start) - mins(b.start));
   const known = staffById();
   panel.replaceChildren(
-    h("h3", null, "En turno", h("small", null, `${list.length} · ${fmtH(list.reduce((a, s) => a + shiftHours(s), 0))}`)),
+    h("h3", null, "On shift", h("small", null, `${list.length} · ${fmtH(list.reduce((a, s) => a + shiftHours(s), 0))}`)),
     list.length ? h("ul", { class: "onshift" }, list.map(s => {
       const p = known[s.staffId];
       return h("li", { style: `--c:${p ? p.color : "var(--ink-3)"}` }, h("span", { class: "sw" }),
-        h("div", null, h("div", { text: p ? p.name : "Turno libre" }), s.position ? h("div", { class: "ps", text: s.position }) : null),
+        h("div", null, h("div", { text: p ? p.name : "Open shift" }), s.position ? h("div", { class: "ps", text: s.position }) : null),
         h("span", { class: "tm" }, `${s.start}–${s.end}`));
-    })) : h("p", { class: "muted", style: "margin:0" }, "No hay turnos este día."));
+    })) : h("p", { class: "muted", style: "margin:0" }, "No shifts this day."));
 }
 
 /* ---------- MENSAJES ---------- */
@@ -1005,7 +1005,7 @@ async function sendMessage(channelId, text) {
   await p;
 }
 function viewMessages() {
-  const ta = h("textarea", { id: "composer", rows: "1", placeholder: mayChat() ? (narrow ? "Escribe un mensaje…" : "Escribe un mensaje… (Enter envía, Mayús+Enter nueva línea)") : "No puedes enviar mensajes en esta vista", disabled: !mayChat(), "aria-label": "Mensaje" });
+  const ta = h("textarea", { id: "composer", rows: "1", placeholder: mayChat() ? (narrow ? "Write a message…" : "Write a message… (Enter sends, Shift+Enter new line)") : "You can't send messages here", disabled: !mayChat(), "aria-label": "Message" });
   const send = async () => {
     const t = ta.value.trim(); if (!t) return;
     ta.value = ""; ta.style.height = "";
@@ -1015,46 +1015,46 @@ function viewMessages() {
   ta.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); send(); } });
   ta.addEventListener("input", () => { ta.style.height = "auto"; ta.style.height = Math.min(160, ta.scrollHeight) + "px"; });
   return h("section", { class: "chat" + (narrow ? " m-" + S.chatPane : ""), id: "chat" },
-    h("nav", { class: "chans", id: "chans", "aria-label": "Conversaciones" }),
+    h("nav", { class: "chans", id: "chans", "aria-label": "Conversations" }),
     h("div", { class: "convo" },
       h("div", { class: "convo-head", id: "convo-head" }),
       h("div", { class: "msgs", id: "msgs", "aria-live": "polite" }),
-      h("div", { class: "composer" }, ta, h("button", { class: "btn primary", disabled: !mayChat(), onclick: send }, "Enviar"))));
+      h("div", { class: "composer" }, ta, h("button", { class: "btn primary", disabled: !mayChat(), onclick: send }, "Send"))));
 }
 function chanLabel(c) {
-  if (c.type === "dm") { const other = (c.members || []).find(m => m !== (S.me && S.me.id)) || (c.members || [])[0]; return h("span", { "data-uid": other, "data-fallback": "Mensaje directo" }); }
+  if (c.type === "dm") { const other = (c.members || []).find(m => m !== (S.me && S.me.id)) || (c.members || [])[0]; return h("span", { "data-uid": other, "data-fallback": "Direct message" }); }
   return h("span", { text: c.name || c.id });
 }
 function updateChannels() {
   const nav = $("#chans"); if (!nav) return;
   const list = visibleChannels();
-  const chans = list.filter(c => c.type !== "dm").sort((a, b) => a.id === "general" ? -1 : b.id === "general" ? 1 : (a.name || "").localeCompare(b.name || "", "es"));
+  const chans = list.filter(c => c.type !== "dm").sort((a, b) => a.id === "general" ? -1 : b.id === "general" ? 1 : (a.name || "").localeCompare(b.name || "", "en"));
   const dms = list.filter(c => c.type === "dm").sort((a, b) => (b.lastTs || 0) - (a.lastTs || 0));
   const btn = c => h("button", { class: "chan" + (isUnread(c) ? " unread" : ""), "aria-current": String(c.id === S.channel), onclick: () => openChannel(c.id) },
     c.type === "dm" ? h("img", { alt: "", src: BLANK, "data-avuid": (c.members || []).find(m => m !== (S.me && S.me.id)) }) : h("span", { class: "hash" }, "#"),
-    chanLabel(c), isUnread(c) ? h("span", { class: "udot", "aria-label": "sin leer" }) : null);
+    chanLabel(c), isUnread(c) ? h("span", { class: "udot", "aria-label": "unread" }) : null);
   fill(nav,
-    h("h4", null, "Canales", mayChat() ? h("button", { "aria-label": "Nuevo canal", title: "Nuevo canal", onclick: openNewChannel }, "+") : null),
+    h("h4", null, "Channels", mayChat() ? h("button", { "aria-label": "New channel", title: "New channel", onclick: openNewChannel }, "+") : null),
     chans.map(btn),
-    S.live ? h("h4", null, "Directos", mayChat() ? h("button", { "aria-label": "Nuevo mensaje directo", title: "Nuevo mensaje directo", onclick: openNewDM }, "+") : null) : null,
+    S.live ? h("h4", null, "Direct", mayChat() ? h("button", { "aria-label": "New direct message", title: "New direct message", onclick: openNewDM }, "+") : null) : null,
     S.live ? dms.map(btn) : null);
   fillPeople(nav);
   const c = list.find(x => x.id === S.channel) || { id: S.channel, name: S.channel };
   const head = $("#convo-head");
   fill(head,
-    h("button", { class: "btn ghost icon-btn back", "aria-label": "Volver a conversaciones", onclick: () => { S.chatPane = "list"; const ch = $("#chat"); if (ch) ch.className = "chat m-list"; } }, "‹"),
+    h("button", { class: "btn ghost icon-btn back", "aria-label": "Back to conversations", onclick: () => { S.chatPane = "list"; const ch = $("#chat"); if (ch) ch.className = "chat m-list"; } }, "‹"),
     h("h2", null, c.type === "dm" ? chanLabel(c) : ["#", c.name || c.id]),
-    c.type === "dm" ? h("span", { class: "muted" }, "Mensaje directo") : h("span", { class: "muted", text: c.topic || (c.id === "general" ? "Todo el equipo" : "") }),
+    c.type === "dm" ? h("span", { class: "muted" }, "Direct message") : h("span", { class: "muted", text: c.topic || (c.id === "general" ? "Whole team" : "") }),
     c.type !== "dm" && c.id !== "general" && S.canEdit ? delChannelBtn(c) : null);
   fillPeople(head);
 }
 function delChannelBtn(c) {
-  const b = h("button", { class: "btn ghost danger", style: "margin-left:8px" }, "Borrar canal");
+  const b = h("button", { class: "btn ghost danger", style: "margin-left:8px" }, "Delete channel");
   b.onclick = async () => {
-    if (!b.classList.contains("armed")) { b.classList.add("armed"); b.textContent = "¿Borrar? Confirmar"; return; }
+    if (!b.classList.contains("armed")) { b.classList.add("armed"); b.textContent = "Delete? Confirm"; return; }
     const msgs = await store.get(msgPath(c.id), { limit: 1000 });
     for (const m of msgs) await store.del(msgPath(c.id) + "/" + m.id);
-    await safe(store.del("channels/" + c.id), "Canal borrado");
+    await safe(store.del("channels/" + c.id), "Channel deleted");
     openChannel("general");
   };
   return b;
@@ -1062,28 +1062,28 @@ function delChannelBtn(c) {
 function openChannel(id) { S.chatPane = "convo"; const ch = $("#chat"); if (ch && narrow) ch.className = "chat m-convo"; S.channel = id; lsSet("jornada-channel", id); const bx = $("#msgs"); if (bx) bx.dataset.ch = ""; subscribeMsgs(); updateChannels(); updateMsgs(); updateUnread(); if (!narrow) { $("#composer") && $("#composer").focus(); } }
 function dayLabel(ts) {
   const d = iso(new Date(ts)), t = todayISO();
-  if (d === t) return "Hoy"; if (d === addDays(t, -1)) return "Ayer";
+  if (d === t) return "Today"; if (d === addDays(t, -1)) return "Yesterday";
   return cap(fmtDay(d, { weekday: "long", day: "numeric", month: "long" }));
 }
 function updateMsgs() {
   const box = $("#msgs"); if (!box) return;
   const atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 80;
   box.replaceChildren();
-  if (!S.messages.length) box.append(h("div", { class: "empty" }, h("b", null, "Todavía no hay mensajes"), "Escribe el primero para empezar la conversación."));
+  if (!S.messages.length) box.append(h("div", { class: "empty" }, h("b", null, "No messages yet"), "Write the first one to start the conversation."));
   let prevDay = null, prev = null;
   for (const m of S.messages) {
     const day = iso(new Date(m.ts));
     if (day !== prevDay) { box.append(h("div", { class: "daysep" }, dayLabel(m.ts))); prev = null; }
     const cont = prev && prev.author === m.author && m.ts - prev.ts < 5 * 60e3;
     const mine = S.me && S.me.id && m.author === S.me.id;
-    const fallback = m.authorLabel || "Alguien";
-    const delB = (mine || S.canEdit) && !S.readonly ? h("button", { class: "del", title: "Borrar mensaje" }, "Borrar") : null;
-    if (delB) delB.onclick = async () => { if (delB.dataset.a) { await safe(store.del(msgPath(S.channel) + "/" + m.id)); } else { delB.dataset.a = 1; delB.textContent = "¿Seguro?"; delB.style.opacity = 1; } };
+    const fallback = m.authorLabel || "Someone";
+    const delB = (mine || S.canEdit) && !S.readonly ? h("button", { class: "del", title: "Delete message" }, "Delete") : null;
+    if (delB) delB.onclick = async () => { if (delB.dataset.a) { await safe(store.del(msgPath(S.channel) + "/" + m.id)); } else { delB.dataset.a = 1; delB.textContent = "Sure?"; delB.style.opacity = 1; } };
     box.append(h("div", { class: "msg" + (cont ? " cont" : "") },
       h("img", { alt: "", src: BLANK, "data-avuid": m.authorLabel ? null : m.author }),
       h("div", { style: "min-width:0" },
         cont ? null : h("div", null, h("span", { class: "who", "data-uid": m.authorLabel ? null : m.author, "data-fallback": fallback, text: m.authorLabel || "" }),
-          h("span", { class: "when" }, new Date(m.ts).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })), delB),
+          h("span", { class: "when" }, new Date(m.ts).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })), delB),
         h("div", { class: "body", text: m.text }),
         cont && delB ? delB : null)));
     prevDay = day; prev = m;
@@ -1095,30 +1095,30 @@ function updateMsgs() {
 }
 function slug(s) { return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40); }
 function openNewChannel() {
-  const name = h("input", { id: "f-chan", placeholder: "cocina, turno-noche…", maxlength: "40" });
-  const topic = h("input", { id: "f-topic", placeholder: "Opcional", maxlength: "80" });
+  const name = h("input", { id: "f-chan", placeholder: "kitchen, night-shift…", maxlength: "40" });
+  const topic = h("input", { id: "f-topic", placeholder: "Optional", maxlength: "80" });
   const create = async () => {
-    const id = slug(name.value); if (!id) { toast("Escribe un nombre para el canal."); return; }
+    const id = slug(name.value); if (!id) { toast("Type a name for the channel."); return; }
     if (S.channels.some(c => c.id === id)) { close(); openChannel(id); return; }
     close();
-    if (await safe(store.set("channels/" + id, { name: id, type: "channel", topic: topic.value.trim(), createdBy: (S.me && S.me.id) || null, lastTs: 0 }), "Canal creado")) openChannel(id);
+    if (await safe(store.set("channels/" + id, { name: id, type: "channel", topic: topic.value.trim(), createdBy: (S.me && S.me.id) || null, lastTs: 0 }), "Channel created")) openChannel(id);
   };
   name.addEventListener("keydown", e => { if (e.key === "Enter") create(); });
   const close = modal(h("div", { class: "modal", role: "dialog", "aria-modal": "true" },
-    h("h2", null, "Nuevo canal"),
-    h("div", { class: "field" }, h("label", { for: "f-chan" }, "Nombre"), name),
-    h("div", { class: "field" }, h("label", { for: "f-topic" }, "Descripción"), topic),
-    h("div", { class: "actions" }, h("button", { class: "btn ghost", onclick: () => close() }, "Cancelar"), h("button", { class: "btn primary", onclick: create }, "Crear canal"))));
+    h("h2", null, "New channel"),
+    h("div", { class: "field" }, h("label", { for: "f-chan" }, "Name"), name),
+    h("div", { class: "field" }, h("label", { for: "f-topic" }, "Description"), topic),
+    h("div", { class: "actions" }, h("button", { class: "btn ghost", onclick: () => close() }, "Cancel"), h("button", { class: "btn primary", onclick: create }, "Create channel"))));
 }
 function openNewDM() {
-  const q = h("input", { id: "f-dm", placeholder: "Busca por nombre", autocomplete: "off" });
+  const q = h("input", { id: "f-dm", placeholder: "Search by name", autocomplete: "off" });
   const hits = h("div", { class: "hits" });
   const run = () => {
     const v = q.value.trim().toLowerCase();
     const res = Object.entries(S.users).filter(([id, u]) => id !== S.me.id && (!v || (u.name || "").toLowerCase().includes(v) || (u.email || "").toLowerCase().includes(v)))
-      .sort((a, b) => (a[1].name || "").localeCompare(b[1].name || "", "es")).slice(0, 30);
-    hits.replaceChildren(...(res.length ? res.map(([id, u]) => h("button", { onclick: () => start(id) }, h("img", { alt: "", src: avatarFor(id), referrerpolicy: "no-referrer" }), h("span", { text: u.name || u.email || "Sin nombre" }))) :
-      [h("div", { class: "muted", style: "padding:8px 10px" }, Object.keys(S.users).length > 1 ? "Sin resultados" : "Aún no hay nadie más. Tus compañeros aparecen aquí cuando entran por primera vez.")]));
+      .sort((a, b) => (a[1].name || "").localeCompare(b[1].name || "", "en")).slice(0, 30);
+    hits.replaceChildren(...(res.length ? res.map(([id, u]) => h("button", { onclick: () => start(id) }, h("img", { alt: "", src: avatarFor(id), referrerpolicy: "no-referrer" }), h("span", { text: u.name || u.email || "No name" }))) :
+      [h("div", { class: "muted", style: "padding:8px 10px" }, Object.keys(S.users).length > 1 ? "No results" : "Nobody else yet. Your coworkers show up here after they sign in for the first time.")]));
   };
   q.addEventListener("input", run);
   const start = async other => {
@@ -1129,10 +1129,10 @@ function openNewDM() {
     openChannel(id);
   };
   const close = modal(h("div", { class: "modal", role: "dialog", "aria-modal": "true" },
-    h("h2", null, "Mensaje directo"),
-    h("div", { class: "field" }, h("label", { for: "f-dm" }, "Para"), q), hits,
-    h("p", { class: "muted", style: "margin:0" }, "Solo vosotros dos podéis leer esta conversación."),
-    h("div", { class: "actions" }, h("button", { class: "btn ghost", onclick: () => close() }, "Cancelar"))));
+    h("h2", null, "Direct message"),
+    h("div", { class: "field" }, h("label", { for: "f-dm" }, "To"), q), hits,
+    h("p", { class: "muted", style: "margin:0" }, "Only the two of you can read this conversation."),
+    h("div", { class: "actions" }, h("button", { class: "btn ghost", onclick: () => close() }, "Cancel"))));
   run();
 }
 
@@ -1144,105 +1144,105 @@ function viewTeam() {
   const mon = mondayOf(S.date);
   const hasExamples = S.staff.some(p => p.example);
   if (narrow) return h("section", { style: "display:flex;flex-direction:column;gap:12px" },
-    h("div", { class: "toolbar" }, h("span", { class: "label", style: "text-align:left" }, `${S.staff.length} ${S.staff.length === 1 ? "persona" : "personas"}`), ed ? h("button", { class: "btn primary", onclick: () => openStaff({}) }, "+ Persona") : null),
+    h("div", { class: "toolbar" }, h("span", { class: "label", style: "text-align:left" }, `${S.staff.length} ${S.staff.length === 1 ? "person" : "people"}`), ed ? h("button", { class: "btn primary", onclick: () => openStaff({}) }, "+ Person") : null),
     hasExamples && ed ? exampleNotice() : null,
-    h("p", { class: "muted", style: "margin:0" }, `Horas planificadas en la semana del ${parse(mon).getDate()} ${fmtDay(mon, { month: "short" })}`),
+    h("p", { class: "muted", style: "margin:0" }, `Hours planned for the week of ${parse(mon).getDate()} ${fmtDay(mon, { month: "short" })}`),
     h("div", { class: "tcards" }, sortedStaff().map(p => {
       const hrs = hoursBy[p.id] || 0, c = +p.contractHours || 0, over = c && hrs > c;
       return h("button", { class: "tcard", disabled: !ed ? true : null, style: ed ? null : "cursor:default", onclick: ed ? () => openStaff(p) : null },
         staffRowHead(p),
         h("div", { class: "num" }, fmtH(hrs), c ? h("div", { class: "meter" + (over ? " over" : ""), style: "width:70px;margin-left:auto" }, h("i", { style: `width:${Math.min(100, hrs / c * 100)}%` })) : null,
-          c ? h("div", { style: "font-size:11px;color:var(--ink-3)" }, "de " + c + " h") : null));
+          c ? h("div", { style: "font-size:11px;color:var(--ink-3)" }, "of " + c + " h") : null));
     })),
-    ed ? accessPanel() : h("p", { class: "muted" }, "Solo los gestores pueden cambiar el equipo y los turnos."));
+    ed ? accessPanel() : h("p", { class: "muted" }, "Only managers can change the team and shifts."));
   return h("section", { style: "display:flex;flex-direction:column;gap:12px" },
     h("div", { class: "toolbar" },
-      h("span", { class: "label" }, `${S.staff.length} ${S.staff.length === 1 ? "persona" : "personas"}`),
-      h("span", { class: "muted" }, `Horas de la semana del ${parse(mon).getDate()} ${fmtDay(mon, { month: "short" })}`),
+      h("span", { class: "label" }, `${S.staff.length} ${S.staff.length === 1 ? "person" : "people"}`),
+      h("span", { class: "muted" }, `Hours for the week of ${parse(mon).getDate()} ${fmtDay(mon, { month: "short" })}`),
       h("span", { class: "spacer" }),
-      ed ? h("button", { class: "btn primary", onclick: () => openStaff({}) }, "+ Persona") : null),
+      ed ? h("button", { class: "btn primary", onclick: () => openStaff({}) }, "+ Person") : null),
     hasExamples && ed ? exampleNotice() : null,
     h("div", { class: "team" }, h("table", { class: "list" },
-      h("thead", null, h("tr", null, h("th", null, "Nombre"), h("th", null, "Puesto"), h("th", null, "Cuenta"), h("th", null, "Esta semana"), h("th", null, "Contrato"))),
+      h("thead", null, h("tr", null, h("th", null, "Name"), h("th", null, "Position"), h("th", null, "Account"), h("th", null, "This week"), h("th", null, "Contract"))),
       h("tbody", null, sortedStaff().map(p => {
         const hrs = hoursBy[p.id] || 0, c = +p.contractHours || 0, over = c && hrs > c;
         return h("tr", { class: ed ? "clickable" : null, onclick: ed ? () => openStaff(p) : null, tabindex: ed ? "0" : null, onkeydown: ed ? e => { if (e.key === "Enter") openStaff(p); } : null },
           h("td", null, staffRowHead(p)),
           h("td", { text: p.role || "—" }),
-          h("td", null, p.userId ? h("span", { "data-uid": p.userId, "data-fallback": "Vinculada" }) : h("span", { class: "muted" }, "—")),
+          h("td", null, p.userId ? h("span", { "data-uid": p.userId, "data-fallback": "Linked" }) : h("span", { class: "muted" }, "—")),
           h("td", { class: "num" }, fmtH(hrs), c ? h("div", { class: "meter" + (over ? " over" : "") }, h("i", { style: `width:${Math.min(100, hrs / c * 100)}%` })) : null),
           h("td", { class: "num" }, c ? c + " h" : "—"));
       })))),
-    ed ? accessPanel() : h("p", { class: "muted" }, "Solo los gestores pueden cambiar el equipo y los turnos."));
+    ed ? accessPanel() : h("p", { class: "muted" }, "Only managers can change the team and shifts."));
 }
 function accessPanel() {
   const owner = S.setup && S.setup.owner;
-  const rows = Object.entries(S.users).sort((a, b) => (a[1].name || "").localeCompare(b[1].name || "", "es"));
+  const rows = Object.entries(S.users).sort((a, b) => (a[1].name || "").localeCompare(b[1].name || "", "en"));
   return h("div", { class: "panel access" },
-    h("h3", null, "Accesos a la app", h("small", null, rows.length + (rows.length === 1 ? " cuenta" : " cuentas"))),
-    h("p", { class: "muted", style: "margin:0 0 6px" }, "Aquí aparece cada persona que ha entrado en la app. Los gestores pueden cambiar horarios, equipo y briefing; el resto puede verlos y usar los mensajes."),
+    h("h3", null, "App access", h("small", null, rows.length + (rows.length === 1 ? " account" : " accounts"))),
+    h("p", { class: "muted", style: "margin:0 0 6px" }, "Everyone who has signed in to the app appears here. Managers can change the schedule, team and briefing; everyone else can view them and use messages."),
     rows.map(([id, u]) => {
       const adm = S.adminIds.has(id), isOwner = id === owner, isMe = id === S.me.id;
-      const b = !isOwner ? h("button", { class: "btn" + (adm ? " ghost" : "") }, adm ? "Quitar gestor" : "Hacer gestor") : null;
+      const b = !isOwner ? h("button", { class: "btn" + (adm ? " ghost" : "") }, adm ? "Remove manager" : "Make manager") : null;
       if (b) b.onclick = async () => {
-        if (adm && isMe && !b.classList.contains("armed")) { b.classList.add("danger", "armed"); b.textContent = "¿Quitarte a ti? Confirmar"; return; }
+        if (adm && isMe && !b.classList.contains("armed")) { b.classList.add("danger", "armed"); b.textContent = "Remove yourself? Confirm"; return; }
         b.disabled = true;
-        await safe(adm ? store.del("admins/" + id) : store.set("admins/" + id, { since: Date.now(), by: S.me.id }), adm ? "Ya no es gestor" : "Ahora es gestor");
+        await safe(adm ? store.del("admins/" + id) : store.set("admins/" + id, { since: Date.now(), by: S.me.id }), adm ? "No longer a manager" : "Now a manager");
       };
       return h("div", { class: "row" }, h("img", { alt: "", src: avatarFor(id), referrerpolicy: "no-referrer" }),
-        h("div", { class: "who" }, h("div", { style: "font-weight:600", text: (u.name || "Sin nombre") + (isMe ? " (tú)" : "") }), h("div", { class: "muted", text: u.email || "" })),
-        h("span", { class: "pill" + (adm ? " admin" : "") }, isOwner ? "Administrador" : adm ? "Gestor" : "Equipo"), b);
+        h("div", { class: "who" }, h("div", { style: "font-weight:600", text: (u.name || "No name") + (isMe ? " (you)" : "") }), h("div", { class: "muted", text: u.email || "" })),
+        h("span", { class: "pill" + (adm ? " admin" : "") }, isOwner ? "Administrator" : adm ? "Manager" : "Team"), b);
     }));
 }
 function exampleNotice() {
-  const b = h("button", { class: "btn" }, "Borrar datos de ejemplo");
+  const b = h("button", { class: "btn" }, "Delete example data");
   b.onclick = async () => {
-    if (!b.classList.contains("armed")) { b.classList.add("danger", "armed"); b.textContent = "¿Borrar todo lo de ejemplo? Confirmar"; return; }
-    b.disabled = true; b.textContent = "Borrando…";
+    if (!b.classList.contains("armed")) { b.classList.add("danger", "armed"); b.textContent = "Delete all example data? Confirm"; return; }
+    b.disabled = true; b.textContent = "Deleting…";
     for (const coll of ["shifts", "staff", "briefings", "messages"]) {
       const rows = await store.get(coll, { where: [["example", "==", true]], limit: 1000 });
       for (const r of rows) await safe(store.del(coll + "/" + r.id));
     }
-    toast("Datos de ejemplo borrados");
+    toast("Example data deleted");
   };
-  return h("div", { class: "notice" }, "El equipo, los turnos, el briefing y el mensaje de bienvenida son de ejemplo. Sustitúyelos por tu equipo real.", h("span", { class: "spacer", style: "flex:1" }), b);
+  return h("div", { class: "notice" }, "The team, shifts, briefing and welcome message are examples. Replace them with your real team.", h("span", { class: "spacer", style: "flex:1" }), b);
 }
 function openStaff(p) {
   const isNew = !p.id;
   const f = {
-    name: h("input", { id: "s-name", value: p.name || "", placeholder: "Nombre y apellido", maxlength: "60" }),
-    role: h("input", { id: "s-role", value: p.role || "", placeholder: "Camarera, Cocinero, Encargada…", maxlength: "40" }),
+    name: h("input", { id: "s-name", value: p.name || "", placeholder: "First and last name", maxlength: "60" }),
+    role: h("input", { id: "s-role", value: p.role || "", placeholder: "Waiter, Cook, Supervisor…", maxlength: "40" }),
     hours: h("input", { id: "s-hours", type: "number", min: "0", max: "80", value: p.contractHours ?? "", placeholder: "40" })
   };
   let color = p.color || PALETTE[S.staff.length % PALETTE.length];
   const sw = h("div", { class: "swatches" }, PALETTE.map(c => { const b = h("button", { type: "button", style: `--c:${c}`, "aria-label": "Color", "aria-pressed": String(c === color) }); b.onclick = () => { color = c; sw.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); }; return b; }));
-  const linkSel = h("select", { id: "s-link" }, h("option", { value: "" }, "Sin vincular"),
-    Object.entries(S.users).sort((a, b) => (a[1].name || "").localeCompare(b[1].name || "", "es"))
-      .map(([id, u]) => h("option", { value: id }, (u.name || "Sin nombre") + (u.email ? " · " + u.email : ""))));
+  const linkSel = h("select", { id: "s-link" }, h("option", { value: "" }, "Not linked"),
+    Object.entries(S.users).sort((a, b) => (a[1].name || "").localeCompare(b[1].name || "", "en"))
+      .map(([id, u]) => h("option", { value: id }, (u.name || "No name") + (u.email ? " · " + u.email : ""))));
   linkSel.value = p.userId && S.users[p.userId] ? p.userId : "";
-  const linkBox = h("div", { class: "field" }, h("label", { for: "s-link" }, "Cuenta en la app (así verá «Tú» y sus turnos en Hoy)"), linkSel,
-    h("span", { class: "muted" }, "Si no aparece, pídele que entre una vez en la app."));
+  const linkBox = h("div", { class: "field" }, h("label", { for: "s-link" }, "App account (so they see “You” and their shifts in Today)"), linkSel,
+    h("span", { class: "muted" }, "If they're not listed, ask them to sign in to the app once."));
   const save = async () => {
-    const name = f.name.value.trim(); if (!name) { toast("Escribe el nombre."); return; }
+    const name = f.name.value.trim(); if (!name) { toast("Type the name."); return; }
     const data = { name, role: f.role.value.trim(), contractHours: f.hours.value ? +f.hours.value : null, color, userId: linkSel.value || null };
     close();
-    if (isNew) await safe(store.add("staff", data), "Persona añadida");
-    else { const { id, ...rest } = p; await safe(store.set("staff/" + p.id, { ...rest, ...data }), "Cambios guardados"); }
+    if (isNew) await safe(store.add("staff", data), "Person added");
+    else { const { id, ...rest } = p; await safe(store.set("staff/" + p.id, { ...rest, ...data }), "Changes saved"); }
   };
-  const del = h("button", { class: "btn danger left" }, "Eliminar");
+  const del = h("button", { class: "btn danger left" }, "Delete");
   del.onclick = async () => {
-    if (!del.classList.contains("armed")) { del.classList.add("armed"); del.textContent = "¿Eliminar? Sus turnos pasan a libres"; return; }
-    close(); await safe(store.del("staff/" + p.id), "Persona eliminada");
+    if (!del.classList.contains("armed")) { del.classList.add("armed"); del.textContent = "Delete? Their shifts become open"; return; }
+    close(); await safe(store.del("staff/" + p.id), "Person deleted");
   };
   const close = modal(h("div", { class: "modal", role: "dialog", "aria-modal": "true" },
-    h("h2", null, isNew ? "Añadir persona" : "Editar persona"),
-    h("div", { class: "field" }, h("label", { for: "s-name" }, "Nombre"), f.name),
+    h("h2", null, isNew ? "Add person" : "Edit person"),
+    h("div", { class: "field" }, h("label", { for: "s-name" }, "Name"), f.name),
     h("div", { class: "row2" },
-      h("div", { class: "field" }, h("label", { for: "s-role" }, "Puesto habitual"), f.role),
-      h("div", { class: "field" }, h("label", { for: "s-hours" }, "Horas de contrato / semana"), f.hours)),
-    h("div", { class: "field" }, h("label", null, "Color en el horario"), sw),
+      h("div", { class: "field" }, h("label", { for: "s-role" }, "Usual position"), f.role),
+      h("div", { class: "field" }, h("label", { for: "s-hours" }, "Contract hours / week"), f.hours)),
+    h("div", { class: "field" }, h("label", null, "Color in the schedule"), sw),
     linkBox,
-    h("div", { class: "actions" }, !isNew ? del : null, h("button", { class: "btn ghost", onclick: () => close() }, "Cancelar"), h("button", { class: "btn primary", onclick: save }, "Guardar"))));
+    h("div", { class: "actions" }, !isNew ? del : null, h("button", { class: "btn ghost", onclick: () => close() }, "Cancel"), h("button", { class: "btn primary", onclick: save }, "Save"))));
 }
 
 /* ---------- nav + boot ---------- */
@@ -1254,24 +1254,24 @@ $("#acct").addEventListener("click", () => {
   const nm = h("input", { id: "me-name", value: nameOf(S.me.id) || S.me.name || "", maxlength: "60" });
   const close = modal(h("div", { class: "modal", role: "dialog", "aria-modal": "true" },
     h("div", { style: "display:flex;gap:12px;align-items:center" }, h("img", { alt: "", src: avatarFor(S.me.id), referrerpolicy: "no-referrer", style: "width:48px;height:48px;border-radius:50%" }),
-      h("div", null, h("h2", null, "Mi cuenta"), h("div", { class: "muted", text: S.me.email || "" }))),
-    h("div", { class: "field" }, h("label", { for: "me-name" }, "Nombre que ve el equipo"), nm),
-    h("p", { class: "muted", style: "margin:0" }, "Tu permiso: ", h("b", null, S.canEdit ? (S.setup && S.setup.owner === S.me.id ? "Administrador" : "Gestor") : "Equipo")),
+      h("div", null, h("h2", null, "My account"), h("div", { class: "muted", text: S.me.email || "" }))),
+    h("div", { class: "field" }, h("label", { for: "me-name" }, "Name the team sees"), nm),
+    h("p", { class: "muted", style: "margin:0" }, "Your role: ", h("b", null, S.canEdit ? (S.setup && S.setup.owner === S.me.id ? "Administrator" : "Manager") : "Team")),
     h("div", { class: "actions" },
-      h("button", { class: "btn danger left", onclick: async () => { await signOut(fb.auth); location.reload(); } }, "Cerrar sesión"),
-      h("button", { class: "btn ghost", onclick: () => close() }, "Cancelar"),
+      h("button", { class: "btn danger left", onclick: async () => { await signOut(fb.auth); location.reload(); } }, "Sign out"),
+      h("button", { class: "btn ghost", onclick: () => close() }, "Cancel"),
       h("button", { class: "btn primary", onclick: async () => {
         const v = nm.value.trim(); if (!v) return; close();
         try { await updateProfile(fb.auth.currentUser, { displayName: v }); } catch {}
-        await safe(store.merge("users/" + S.me.id, { name: v }), "Nombre guardado");
-      } }, "Guardar"))));
+        await safe(store.merge("users/" + S.me.id, { name: v }), "Name saved");
+      } }, "Save"))));
 });
 
 async function claimOwner() {
   const b = writeBatch(fb.db);
   b.set(doc(fb.db, "admins/" + S.me.id), { since: Date.now(), by: S.me.id });
   b.set(doc(fb.db, "meta/setup"), { owner: S.me.id, at: Date.now() });
-  await safe(b.commit(), "Ahora eres el administrador");
+  await safe(b.commit(), "You're now the administrator");
 }
 
 let installPrompt = null;
@@ -1280,24 +1280,24 @@ if ("serviceWorker" in navigator && (location.protocol === "https:" || location.
 
 /* auth */
 const AUTH_ERR = {
-  "auth/invalid-credential": "Correo o contraseña incorrectos.",
-  "auth/wrong-password": "Correo o contraseña incorrectos.",
-  "auth/user-not-found": "No hay ninguna cuenta con ese correo. Pulsa «Crear cuenta».",
-  "auth/email-already-in-use": "Ya existe una cuenta con ese correo. Pulsa «Entrar».",
-  "auth/weak-password": "La contraseña debe tener al menos 6 caracteres.",
-  "auth/invalid-email": "Ese correo no es válido.",
-  "auth/missing-password": "Escribe tu contraseña.",
-  "auth/network-request-failed": "Sin conexión a internet.",
-  "auth/too-many-requests": "Demasiados intentos. Espera unos minutos.",
-  "auth/unauthorized-domain": "Esta dirección web no está autorizada en Firebase (paso 4 de la guía).",
-  "auth/operation-not-allowed": "Este método de acceso no está activado en Firebase (paso 1 de la guía)."
+  "auth/invalid-credential": "Wrong email or password.",
+  "auth/wrong-password": "Wrong email or password.",
+  "auth/user-not-found": "No account with that email. Tap “Create account”.",
+  "auth/email-already-in-use": "An account with that email already exists. Tap “Sign in”.",
+  "auth/weak-password": "Password must be at least 6 characters.",
+  "auth/invalid-email": "That email isn't valid.",
+  "auth/missing-password": "Type your password.",
+  "auth/network-request-failed": "No internet connection.",
+  "auth/too-many-requests": "Too many attempts. Wait a few minutes.",
+  "auth/unauthorized-domain": "This web address isn't authorized in Firebase (step 4 of the guide).",
+  "auth/operation-not-allowed": "This sign-in method isn't enabled in Firebase (step 1 of the guide)."
 };
 function showAuth() {
   $("#boot").hidden = true; $("#app").hidden = true; $("#auth").hidden = false;
   let signup = false;
   const err = $("#a-err"), form = $("#auth-form");
-  const setMode = v => { signup = v; $("#name-field").hidden = !v; $("#a-submit").textContent = v ? "Crear cuenta" : "Entrar"; $("#a-toggle").textContent = v ? "Ya tengo cuenta: entrar" : "¿Primera vez? Crear cuenta"; $("#a-pass").autocomplete = v ? "new-password" : "current-password"; err.textContent = ""; };
-  const fail = e => { err.textContent = AUTH_ERR[e && e.code] || "No se pudo entrar. Inténtalo de nuevo."; console.warn(e); };
+  const setMode = v => { signup = v; $("#name-field").hidden = !v; $("#a-submit").textContent = v ? "Create account" : "Sign in"; $("#a-toggle").textContent = v ? "I have an account: sign in" : "First time? Create account"; $("#a-pass").autocomplete = v ? "new-password" : "current-password"; err.textContent = ""; };
+  const fail = e => { err.textContent = AUTH_ERR[e && e.code] || "Couldn't sign in. Please try again."; console.warn(e); };
   $("#a-toggle").onclick = () => setMode(!signup);
   $("#g-btn").onclick = async () => {
     err.textContent = "";
@@ -1310,13 +1310,13 @@ function showAuth() {
   };
   $("#a-reset").onclick = async () => {
     const em = $("#a-email").value.trim();
-    if (!em) { err.textContent = "Escribe tu correo arriba y vuelve a pulsar «Olvidé mi contraseña»."; return; }
-    try { await sendPasswordResetEmail(fb.auth, em); err.textContent = ""; toast("Te enviamos un correo para cambiar la contraseña."); } catch (e) { fail(e); }
+    if (!em) { err.textContent = "Type your email above and tap “Forgot password” again."; return; }
+    try { await sendPasswordResetEmail(fb.auth, em); err.textContent = ""; toast("We sent you an email to reset your password."); } catch (e) { fail(e); }
   };
   form.onsubmit = async e => {
     e.preventDefault(); err.textContent = "";
     const em = $("#a-email").value.trim(), pw = $("#a-pass").value, nm = $("#a-name").value.trim();
-    if (signup && !nm) { err.textContent = "Escribe tu nombre."; return; }
+    if (signup && !nm) { err.textContent = "Type your name."; return; }
     $("#a-submit").disabled = true;
     try {
       if (signup) {
@@ -1334,7 +1334,7 @@ async function startApp(u) {
   if (started) return;
   started = u.uid;
   $("#boot").hidden = true; $("#auth").hidden = true; $("#app").hidden = false;
-  const name = pendingName || u.displayName || (u.email || "").split("@")[0] || "Sin nombre";
+  const name = pendingName || u.displayName || (u.email || "").split("@")[0] || "No name";
   S.me = { id: u.uid, name, email: u.email || "", isOwner: false, canEdit: false };
   S.users[u.uid] = { name, email: u.email || "", photo: u.photoURL || null };
   S.canWrite = true; S.ready = true;

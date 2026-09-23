@@ -497,7 +497,7 @@ table.list{border-collapse:collapse;width:100%;min-width:620px}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile, signOut, EmailAuthProvider, linkWithCredential, updatePassword, reauthenticateWithPopup, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, doc, onSnapshot, query, where, orderBy, limit, getDoc, getDocs, setDoc, deleteDoc, writeBatch, runTransaction, serverTimestamp, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 (() => {
@@ -1680,6 +1680,9 @@ $("#acct").addEventListener("click", () => {
       h("div", null, h("h2", null, "My account"), h("div", { class: "muted", text: S.me.email || "" }))),
     h("div", { class: "field" }, h("label", { for: "me-name" }, "Name the team sees"), nm),
     h("p", { class: "muted", style: "margin:0" }, "Your role: ", h("b", null, S.canEdit ? (S.setup && S.setup.owner === S.me.id ? "Administrator" : "Manager") : "Team")),
+    h("div", { style: "display:flex;align-items:center;gap:10px;flex-wrap:wrap" },
+      h("span", { class: "muted" }, "Sign-in: " + [hasGoogle() ? "Google" : "", hasPassword() ? "email + password" : ""].filter(Boolean).join(" and ")),
+      h("button", { class: "btn", onclick: () => { close(); openPassword(false); } }, hasPassword() ? "Change password" : "Create password")),
     h("div", { class: "actions" },
       h("button", { class: "btn danger left", onclick: async () => { await signOut(fb.auth); location.reload(); } }, "Sign out"),
       h("button", { class: "btn ghost", onclick: () => close() }, "Cancel"),
@@ -1735,7 +1738,7 @@ function showAuth() {
   $("#a-reset").onclick = async () => {
     const em = $("#a-email").value.trim();
     if (!em) { err.textContent = "Type your email above and tap “Forgot password” again."; return; }
-    try { await sendPasswordResetEmail(fb.auth, em); err.textContent = ""; toast("We sent you an email to reset your password."); } catch (e) { fail(e); }
+    try { await sendPasswordResetEmail(fb.auth, em); err.textContent = ""; err.textContent = ""; toast("If this email has a password, a reset link is on its way. Check your spam folder too. If you signed up with Google, use “Sign in with Google”."); } catch (e) { fail(e); }
   };
   form.onsubmit = async e => {
     e.preventDefault(); err.textContent = "";
@@ -1753,6 +1756,55 @@ function showAuth() {
   };
 }
 let pendingName = null, started = null, fullStarted = false;
+/* ---------- password for Google accounts ---------- */
+const providers = () => ((fb.auth.currentUser && fb.auth.currentUser.providerData) || []).map(p => p.providerId);
+const hasPassword = () => providers().includes("password");
+const hasGoogle = () => providers().includes("google.com");
+function maybeAskPassword() {
+  const u = fb.auth.currentUser; if (!u || !u.email || hasPassword()) return;
+  const k = "jornada-pwskip-" + u.uid, last = lsGet(k);
+  if (last && Date.now() - last < 24 * 3600000) return;
+  if (document.querySelector(".overlay")) { setTimeout(maybeAskPassword, 3000); return; }
+  openPassword(true);
+}
+async function reauthGoogle() { const prov = new GoogleAuthProvider(); prov.setCustomParameters({ login_hint: fb.auth.currentUser.email }); await reauthenticateWithPopup(fb.auth.currentUser, prov); }
+function openPassword(firstTime) {
+  const u = fb.auth.currentUser, creating = !hasPassword();
+  const cur = !creating && !hasGoogle() ? h("input", { id: "pw-cur", type: "password", autocomplete: "current-password" }) : null;
+  const p1 = h("input", { id: "pw-1", type: "password", minlength: "6", autocomplete: "new-password" });
+  const p2 = h("input", { id: "pw-2", type: "password", minlength: "6", autocomplete: "new-password" });
+  const err = h("p", { class: "auth-err", role: "alert" });
+  const PW_ERR = { "auth/weak-password": "Password must be at least 6 characters.", "auth/wrong-password": "Current password is wrong.", "auth/invalid-credential": "Current password is wrong.",
+    "auth/popup-closed-by-user": "Google sign-in was closed. Try again.", "auth/network-request-failed": "No internet connection.", "auth/too-many-requests": "Too many attempts. Wait a few minutes.",
+    "auth/email-already-in-use": "Another account already uses this email with a password.", "auth/credential-already-in-use": "Another account already uses this email with a password.",
+    "auth/provider-already-linked": "This account already has a password." };
+  const saveB = h("button", { class: "btn primary" }, creating ? "Save password" : "Change password");
+  saveB.onclick = async () => {
+    err.textContent = "";
+    if (p1.value.length < 6) { err.textContent = "Password must be at least 6 characters."; return; }
+    if (p1.value !== p2.value) { err.textContent = "The two passwords don't match."; return; }
+    saveB.disabled = true; saveB.textContent = "Saving…";
+    const attempt = () => creating ? linkWithCredential(u, EmailAuthProvider.credential(u.email, p1.value)) : updatePassword(u, p1.value);
+    try {
+      if (cur) await reauthenticateWithCredential(u, EmailAuthProvider.credential(u.email, cur.value));
+      try { await attempt(); }
+      catch (e) { if (e.code === "auth/requires-recent-login" && hasGoogle()) { await reauthGoogle(); await attempt(); } else throw e; }
+      try { await u.reload(); } catch {}
+      close(); toast(creating ? "Password saved. You can now also sign in with your email." : "Password changed.");
+    } catch (e) { console.warn(e); err.textContent = PW_ERR[e && e.code] || "Couldn't save the password. Try again."; saveB.disabled = false; saveB.textContent = creating ? "Save password" : "Change password"; }
+  };
+  const later = h("button", { class: "btn ghost" }, firstTime ? "Not now" : "Cancel");
+  later.onclick = () => { if (firstTime) lsSet("jornada-pwskip-" + u.uid, Date.now()); close(); };
+  const close = modal(h("div", { class: "modal", role: "dialog", "aria-modal": "true" },
+    h("h2", null, creating ? "Create a password" : "Change password"),
+    creating ? h("p", { class: "muted", style: "margin:0" }, "You signed in with Google. Add a password so you can also sign in on any computer with your email:") : null,
+    h("div", { style: "font-weight:600", text: u.email }),
+    cur ? h("div", { class: "field" }, h("label", { for: "pw-cur" }, "Current password"), cur) : null,
+    h("div", { class: "field" }, h("label", { for: "pw-1" }, creating ? "New password (at least 6 characters)" : "New password"), p1),
+    h("div", { class: "field" }, h("label", { for: "pw-2" }, "Repeat the password"), p2),
+    err,
+    h("div", { class: "actions" }, later, saveB)));
+}
 async function startApp(u) {
   if (started && started !== u.uid) { location.reload(); return; }
   if (started) return;
@@ -1777,6 +1829,7 @@ async function startApp(u) {
   const timer = setTimeout(() => { if (!fullStarted && $("#pending").hidden) showAccessError("timeout"); }, 15000);
   store.subDoc("members/" + u.uid, d => { isMem = !!d; decide(); }, accessErr);
   store.subDoc("admins/" + u.uid, d => { isAdm = !!d; decide(); }, accessErr);
+  setTimeout(maybeAskPassword, 1200);
   store.subDoc("meta/setup", d => { clearTimeout(timer); S.setup = d; gotSetup = true; if (fullStarted) renderShell(); else decide(); if (!fullStarted && isMem === false && isAdm === false) showPending(); });
 }
 function showAccessError(code) {

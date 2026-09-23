@@ -491,7 +491,7 @@ const store = {
     return query(collection(fb.db, coll), ...c);
   },
   sub(coll, qq, cb) { return onSnapshot(this.q(coll, qq), s => cb(s.docs.map(d => ({ id: d.id, ...d.data() }))), dbError); },
-  subDoc(path, cb) { return onSnapshot(doc(fb.db, path), s => cb(s.exists() ? { id: s.id, ...s.data() } : null), dbError); },
+  subDoc(path, cb, onErr) { return onSnapshot(doc(fb.db, path), s => cb(s.exists() ? { id: s.id, ...s.data() } : null), onErr || dbError); },
   async get(coll, qq) { const s = await getDocs(this.q(coll, qq)); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
   set(path, data) { return setDoc(doc(fb.db, path), data); },
   merge(path, data) { return setDoc(doc(fb.db, path), data, { merge: true }); },
@@ -1361,11 +1361,28 @@ async function startApp(u) {
     else if (!ok && fullStarted) location.reload();
     else if (!ok) showPending();
   };
-  store.subDoc("members/" + u.uid, d => { isMem = !!d; decide(); });
-  store.subDoc("admins/" + u.uid, d => { isAdm = !!d; decide(); });
-  store.subDoc("meta/setup", d => { S.setup = d; gotSetup = true; if (fullStarted) renderShell(); else decide(); if (!fullStarted && isMem === false && isAdm === false) showPending(); });
+  const accessErr = e => { console.warn(e); if (!fullStarted) showAccessError(e && e.code); };
+  const timer = setTimeout(() => { if (!fullStarted && $("#pending").hidden) showAccessError("timeout"); }, 15000);
+  store.subDoc("members/" + u.uid, d => { isMem = !!d; decide(); }, accessErr);
+  store.subDoc("admins/" + u.uid, d => { isAdm = !!d; decide(); }, accessErr);
+  store.subDoc("meta/setup", d => { clearTimeout(timer); S.setup = d; gotSetup = true; if (fullStarted) renderShell(); else decide(); if (!fullStarted && isMem === false && isAdm === false) showPending(); });
+}
+function showAccessError(code) {
+  $("#boot").hidden = true; $("#app").hidden = true; $("#auth").hidden = true; $("#pending").hidden = false;
+  $("#p-setup").hidden = true;
+  $("#p-title").textContent = "Couldn't open Jornada";
+  const t = $("#p-text"); t.hidden = false;
+  t.textContent = code === "permission-denied"
+    ? "Firebase refused access. The security rules in Firebase are probably out of date: copy the whole firestore.rules file into Firebase > Firestore > Rules and press Publish, then reload this page."
+    : code === "timeout" ? "Firebase isn't answering. Check your internet connection and reload the page. If it keeps happening, check that the Firestore database exists in Firebase."
+    : "Something went wrong while checking your access (" + (code || "unknown") + "). Reload the page to try again.";
+  $("#p-save").textContent = "Reload"; $("#p-save").onclick = () => location.reload();
+  $("#p-name").closest(".field").hidden = true;
+  $("#p-email").textContent = S.me && S.me.email ? "Signed in as " + S.me.email : "";
+  $("#p-out").onclick = async () => { await signOut(fb.auth); location.reload(); };
 }
 function showPending() {
+  $("#p-name").closest(".field").hidden = false; $("#p-save").textContent = "Save name";
   $("#boot").hidden = true; $("#auth").hidden = true; $("#app").hidden = true; $("#pending").hidden = false;
   const noSetup = S.setup === null;
   $("#p-setup").hidden = !noSetup;

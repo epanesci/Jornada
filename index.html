@@ -1729,7 +1729,7 @@ function showAuth() {
   $("#g-btn").onclick = async () => {
     err.textContent = "";
     const prov = new GoogleAuthProvider(); prov.setCustomParameters({ prompt: "select_account" });
-    try { await signInWithPopup(fb.auth, prov); }
+    try { startApp((await signInWithPopup(fb.auth, prov)).user); }
     catch (e) {
       if (["auth/popup-blocked", "auth/operation-not-supported-in-this-environment", "auth/cancelled-popup-request"].includes(e.code)) { try { await signInWithRedirect(fb.auth, prov); } catch (e2) { fail(e2); } }
       else if (e.code !== "auth/popup-closed-by-user") fail(e);
@@ -1747,10 +1747,11 @@ function showAuth() {
     $("#a-submit").disabled = true;
     try {
       if (signup) {
-        const cred = await createUserWithEmailAndPassword(fb.auth, em, pw);
-        await updateProfile(cred.user, { displayName: nm });
         pendingName = nm;
-      } else await signInWithEmailAndPassword(fb.auth, em, pw);
+        const cred = await createUserWithEmailAndPassword(fb.auth, em, pw);
+        updateProfile(cred.user, { displayName: nm }).catch(() => {});
+        startApp(cred.user);
+      } else startApp((await signInWithEmailAndPassword(fb.auth, em, pw)).user);
     } catch (e2) { fail(e2); }
     $("#a-submit").disabled = false;
   };
@@ -1809,18 +1810,22 @@ async function startApp(u) {
   if (started && started !== u.uid) { location.reload(); return; }
   if (started) return;
   started = u.uid;
+  // leave the sign-in screen right away
+  $("#auth").hidden = true; $("#cfg").hidden = true; $("#boot").hidden = false;
+  const stuck = setTimeout(() => { if (!fullStarted && $("#pending").hidden) showAccessError("timeout"); }, 20000);
   const name = pendingName || u.displayName || (u.email || "").split("@")[0] || "No name";
   S.me = { id: u.uid, name, email: u.email || "", isOwner: false, canEdit: false };
   S.users[u.uid] = { name, email: u.email || "", photo: u.photoURL || null };
-  const mine = await getDoc(doc(fb.db, "users/" + u.uid)).then(d => d.exists() ? d.data() : null).catch(() => null);
+  const mine = await Promise.race([getDoc(doc(fb.db, "users/" + u.uid)).then(d => d.exists() ? d.data() : null).catch(() => null), new Promise(r => setTimeout(() => r(null), 5000))]);
   const myName = (mine && mine.name && !pendingName) ? mine.name : name;
   S.users[u.uid].name = myName; S.me.name = myName;
-  await store.merge("users/" + u.uid, { name: myName, email: u.email || null, photo: u.photoURL || null, lastSeen: Date.now() }).catch(e => console.warn(e));
+  store.merge("users/" + u.uid, { name: myName, email: u.email || null, photo: u.photoURL || null, lastSeen: Date.now() }).catch(e => console.warn(e));
   // access = approved member or manager
   let isMem, isAdm, gotSetup = false;
   const decide = () => {
     if (isMem === undefined || isAdm === undefined || !gotSetup) return;
     const ok = isMem || isAdm;
+    clearTimeout(stuck);
     if (ok && !fullStarted) startFull(u);
     else if (!ok && fullStarted) location.reload();
     else if (!ok) showPending();

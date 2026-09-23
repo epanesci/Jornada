@@ -296,6 +296,19 @@ table.list{border-collapse:collapse;width:100%;min-width:620px}
 .tcard .person{flex:1;min-width:0}
 .tcard .num{font-family:var(--f-mono);font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
 .back{display:none}
+#sched-top{display:flex;flex-direction:column}
+.brief-paper{margin-top:14px}
+.brief-paper textarea{min-height:45vh}
+.bp-title{font-family:var(--f-display);font-weight:700;font-size:17px;color:var(--ink)}
+.week thead th.is-sel{box-shadow:inset 0 -3px 0 var(--accent);color:var(--ink)}
+.week thead th:hover{background:var(--accent-soft)}
+.brief-text{white-space:pre-wrap;font-size:15px;line-height:1.6;overflow-wrap:anywhere;margin-bottom:6px}
+.modal.wide{width:min(640px,100%)}
+.brief-edit{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--bg);width:100%;font-size:16px;line-height:1.6;resize:vertical;min-height:40vh}
+.brief-edit:focus{border-color:var(--accent);outline:none}
+.x-bcell{appearance:none;border:0;background:none;text-align:left;width:100%;height:100%;min-height:64px;padding:8px;font-size:12px;line-height:1.4;color:var(--ink);cursor:pointer;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.x-bcell:hover{background:var(--surface-2)}
+.x-bcell.empty{color:var(--ink-3)}
 .clock{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px}
 .clock.on{background:var(--accent-soft);border-color:transparent}
 .clock-info{min-width:0;flex:1}
@@ -473,7 +486,6 @@ table.list{border-collapse:collapse;width:100%;min-width:620px}
   <nav class="tabs" role="tablist" id="tabs">
     <button class="tab" role="tab" data-view="mine" id="tab-mine"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M8.5 15l2.5 2.5 4.5-4.5"/></svg></span><span>My shifts</span></button>
     <button class="tab" role="tab" data-view="schedule" id="tab-schedule"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg></span><span>Schedule</span></button>
-    <button class="tab" role="tab" data-view="briefing" id="tab-briefing"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14.5 3v4.5H19M9 12h7M9 16h5"/></svg></span><span>Briefing</span></button>
     <button class="tab" role="tab" data-view="messages" id="tab-messages"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><span class="badge" id="unread" hidden>0</span></span><span>Messages</span></button>
     <button class="tab" role="tab" data-view="hours" id="tab-hours" hidden><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span class="badge" id="rev" hidden>0</span></span><span>Hours</span></button>
     <button class="tab" role="tab" data-view="team" id="tab-team"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.8a3.3 3.3 0 0 1 0 6.4M18 14.8c2 .7 3.2 2.4 3.5 5.2"/></svg><span class="badge" id="reqs" hidden>0</span></span><span>Team</span></button>
@@ -575,9 +587,9 @@ async function safe(p, okMsg) {
 
 /* ---------- state ---------- */
 const S = {
-  view: ({ today: "mine" })[lsGet("jornada-view")] || lsGet("jornada-view") || "mine", chatPane: "list", onlyMine: false,
+  view: ({ today: "mine", briefing: "schedule" })[lsGet("jornada-view")] || lsGet("jornada-view") || "mine", chatPane: "list", onlyMine: false,
   date: todayISO(), mode: lsGet("jornada-mode") || "week",
-  staff: [], shifts: [], briefing: null, channels: [], messages: [],
+  staff: [], shifts: [], briefs: {}, channels: [], messages: [],
   channel: lsGet("jornada-channel") || "general",
   user: null, me: null, canEdit: false, canWrite: null, live: true, readonly: false, ready: false,
   users: {}, adminIds: new Set(), setup: undefined, dms: [], members: [], memberIds: new Set(),
@@ -599,6 +611,8 @@ function subscribeWeek() {
   if (key === subWeekKey) return; subWeekKey = key;
   unsubWeek && unsubWeek();
   unsubWeek = store.sub("shifts", { where: [["date", ">=", mon], ["date", "<=", addDays(mon, 6)]] }, rows => { S.shifts = rows; refresh(); });
+  unsubBrief && unsubBrief();
+  unsubBrief = store.sub("briefings", { where: [["date", ">=", mon], ["date", "<=", addDays(mon, 6)]] }, rows => { S.briefs = Object.fromEntries(rows.map(r => [r.id, r])); refresh("brief"); });
   subscribePunches();
 }
 let unsubMyP, unsubWeekP, unsubOpenP, punchKey;
@@ -625,12 +639,7 @@ function watchMyClock() {
     refresh("punch");
   });
 }
-function subscribeBrief() {
-  if (S.date === subBriefKey) return; subBriefKey = S.date;
-  unsubBrief && unsubBrief();
-  S.briefing = null;
-  unsubBrief = store.subDoc("briefings/" + S.date, d => { S.briefing = d; refresh("brief"); });
-}
+function subscribeBrief() {}
 function subscribeMsgs() {
   if (S.channel === subChanKey) return; subChanKey = S.channel;
   unsubMsgs && unsubMsgs();
@@ -687,18 +696,23 @@ function render() {
   renderShell();
   const v = $("#view");
   if (S.view === "hours" && !S.canEdit) S.view = "mine";
+  if (S.view === "briefing") S.view = "schedule";
   if (S.view === "mine") { v.replaceChildren(viewMine()); mounted = "mine"; }
   else if (S.view === "hours") { v.replaceChildren(viewHours()); mounted = "hours"; }
-  else if (S.view === "schedule") { v.replaceChildren(viewSchedule()); mounted = "schedule"; }
+  else if (S.view === "schedule") {
+    const top = h("div", { id: "sched-top" }, viewSchedule()), paper = getPaper();
+    const old = $("#sched-top");
+    if (mounted === "schedule" && old && paper.isConnected) old.replaceWith(top); else v.replaceChildren(top, paper);
+    mounted = "schedule"; updatePaper();
+  }
   else if (S.view === "team") { v.replaceChildren(viewTeam()); mounted = "team"; }
-  else if (S.view === "briefing") { v.replaceChildren(viewBriefing()); mounted = "briefing"; updateBrief(true); }
   else if (S.view === "messages") { v.replaceChildren(viewMessages()); mounted = "messages"; updateChannels(); updateMsgs(); }
 }
 function refresh(what) {
   renderShell();
   if (mounted === "mine" || mounted === "hours") { if (what !== "msgs" && what !== "brief" && what !== "chans") render(); }
-  else if (mounted === "schedule" || mounted === "team") { if (what !== "msgs" && !(what === "brief" && mounted === "team")) render(); }
-  else if (mounted === "briefing") updateBrief(false);
+  else if (mounted === "schedule") { if (what === "brief") updatePaper(); else if (what !== "msgs" && what !== "chans") render(); }
+  else if (mounted === "team") { if (what !== "msgs" && what !== "chans" && what !== "brief") render(); }
   else if (mounted === "messages") { updateChannels(); if (what === "msgs") updateMsgs(); }
 }
 
@@ -745,7 +759,6 @@ function agenda() {
       h("div", { style: "min-width:0" }, h("div", { class: "nm", text: p ? p.name : "Open shift" }), h("div", { class: "ps", text: [s.position, s.note].filter(Boolean).join(" · ") })),
       h("div", null, h("div", { class: "tm" }, `${s.start}–${s.end}`), h("div", { class: "hr" }, fmtH(shiftHours(s)))));
   };
-  const b = S.briefing;
   return h("section", { style: "display:flex;flex-direction:column;gap:12px" },
     h("div", { class: "toolbar" },
       h("button", { class: "btn icon-btn", "aria-label": "Previous week", onclick: () => setDate(addDays(S.date, -7)) }, "‹"),
@@ -762,7 +775,6 @@ function agenda() {
       h("button", { "aria-pressed": String(S.onlyMine), onclick: () => { S.onlyMine = true; render(); } }, "My shifts")) : null,
     h("div", { class: "sec-label" }, cap(fmtDay(S.date, { weekday: "long", day: "numeric", month: "long" })), " · ", `${list.length} ${list.length === 1 ? "shift" : "shifts"}`),
     list.length ? h("div", { class: "alist" }, assigned.map(card), open.map(card)) : h("div", { class: "empty" }, h("b", null, "No shifts this day"), ed ? "Tap + to add one." : ""),
-    b && b.text ? h("button", { class: "btn", style: "align-self:flex-start", onclick: () => go("briefing") }, "View today's briefing") : null,
     ed ? h("button", { class: "fab", "aria-label": "New shift", onclick: () => openShift({ date: S.date }) }, "+") : null);
 }
 
@@ -1201,7 +1213,7 @@ function weekGrid(days) {
     h("colgroup", null, h("col", { class: "c-staff" }), days.map(() => h("col")), h("col", { class: "c-total" })),
     h("thead", null, h("tr", null,
       h("th", null, "Team"),
-      days.map((d, i) => h("th", { class: d === today ? "is-today" : null, style: "cursor:pointer", onclick: () => { S.mode = "day"; lsSet("jornada-mode", "day"); setDate(d); } },
+      days.map((d, i) => h("th", { class: (d === today ? "is-today" : "") + (d === S.date ? " is-sel" : ""), style: "cursor:pointer", title: "Show this day's briefing", onclick: () => setDate(d) },
         DOW[i] + " ", h("span", { class: "d", text: parse(d).getDate() }))),
       h("th", { style: "text-align:right" }, "Hours"))),
     h("tbody", null,
@@ -1247,16 +1259,13 @@ function dayTimeline(d) {
   };
   const head = h("div", { class: "tl-track" });
   for (let m = lo; m <= hi; m += 60) if ((m - lo) % (hours > 14 ? 120 : 60) === 0) head.append(h("span", { class: "tl-hour", style: `left:${pct(m)}%` }, pad(Math.floor(m / 60) % 24) + ":00"));
-  const b = S.briefing;
   const wrap = h("div", { style: "display:flex;flex-direction:column;gap:12px" },
-    h("div", { class: "day-brief" },
-      h("div", null, h("h3", null, "Day's briefing"), h("p", { text: (b && b.text && b.text.trim()) || "No briefing for this day yet." })),
-      h("button", { class: "btn", onclick: () => go("briefing") }, (b && b.text) ? "Open briefing" : (mayEditSchedule() ? "Write briefing" : "View briefing"))),
     h("div", { class: "timeline" }, h("div", { class: "tl-inner" },
       h("div", { class: "tl-row tl-head" }, h("div", { class: "person muted" }, `${list.length} ${list.length === 1 ? "shift" : "shifts"} · ${fmtH(list.reduce((a, s) => a + shiftHours(s), 0))}`), head),
       rows.map(([p, l]) => h("div", { class: "tl-row" }, staffRowHead(p), track(l, p.color || PALETTE[0]))),
       openL.length ? h("div", { class: "tl-row row-open" }, h("div", { class: "person" }, h("span", { class: "av" }, "?"), h("div", { class: "nm" }, "Open shifts")), track(openL, "#8A9399")) : null,
-      !list.length ? h("div", { class: "empty" }, h("b", null, "Nobody works this day"), mayEditSchedule() ? "Add a shift with the + Shift button." : "") : null)));
+      !list.length ? h("div", { class: "empty" }, h("b", null, "Nobody works this day"), mayEditSchedule() ? "Add a shift with the + Shift button." : "") : null)),
+    null);
   return wrap;
 }
 
@@ -1340,75 +1349,70 @@ function modal(node) {
   return close;
 }
 
-/* ---------- BRIEFING ---------- */
-let briefDirty = false, briefSaving = false;
+/* ---------- BRIEFING (inside Schedule) ---------- */
 const TEMPLATE = "Today's goal\n- \n\nBookings and events\n- \n\nStaff and positions\n- \n\nImportant notices\n- \n\nLeft over from yesterday\n- \n";
-function viewBriefing() {
-  const ed = mayEditSchedule();
-  const ta = h("textarea", { id: "brief-text", readonly: !ed, "aria-label": "Day's briefing",
-    placeholder: ed ? "Write today's briefing here: goals, bookings, notices, positions, to-dos…" : "The manager hasn't written a briefing for this day yet." });
-  const status = h("span", { class: "saved", id: "brief-status" });
-  const count = h("span", { class: "muted", id: "brief-count" });
-  const myDate = S.date;
-  const save = debounce(async () => {
-    briefSaving = true; status.textContent = "Saving…"; status.className = "saved pending";
-    const ok = await safe(store.set("briefings/" + myDate, { date: myDate, example: false, text: ta.value, updatedBy: (S.me && S.me.id) || null, updatedAt: Date.now() }));
-    briefSaving = false; briefDirty = false;
-    status.textContent = ok ? "Saved " + new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : "Not saved";
-    status.className = ok ? "saved" : "saved pending";
-  }, 900);
-  ta.addEventListener("input", () => { briefDirty = true; status.textContent = "Unsaved changes…"; status.className = "saved pending"; count.textContent = wc(ta.value); save(); });
-  const tpl = ed ? h("button", { class: "btn ghost", id: "tpl-btn", onclick: () => { if (ta.value.trim()) return; ta.value = TEMPLATE; ta.dispatchEvent(new Event("input")); ta.focus(); } }, "Use template") : null;
-  return h("section", { style: "display:flex;flex-direction:column;gap:12px" },
-    h("div", { class: "toolbar" },
-      h("button", { class: "btn icon-btn", "aria-label": "Previous day", onclick: () => flushThen(() => setDate(addDays(S.date, -1))) }, "‹"),
-      h("button", { class: "btn icon-btn", "aria-label": "Next day", onclick: () => flushThen(() => setDate(addDays(S.date, 1))) }, "›"),
-      h("button", { class: "btn", onclick: () => flushThen(() => setDate(todayISO())) }, "Today"),
-      h("span", { class: "label", text: cap(fmtDay(S.date, narrow ? { weekday: "short", day: "numeric", month: "short" } : { weekday: "long", day: "numeric", month: "long", year: "numeric" })) }),
-      narrow ? null : h("span", { class: "spacer" }),
-      narrow ? null : h("input", { type: "date", id: "brief-date", class: "btn", value: S.date, "aria-label": "Pick a date", onchange: e => e.target.value && flushThen(() => setDate(e.target.value)) })),
-    h("div", { class: "brief" },
-      h("div", { class: "paper" },
-        h("div", { class: "paper-head" }, h("span", { id: "brief-meta" }), h("span", { style: "display:flex;gap:12px;align-items:center" }, tpl, count, status)),
-        ta),
-      h("aside", { class: "side" },
-        h("div", { class: "panel", id: "brief-shifts" }),
-        h("div", { class: "panel" }, h("h3", null, "Share with the team"),
-          h("p", { class: "muted", style: "margin:0 0 10px" }, "Let #general know the briefing is ready."),
-          h("button", { class: "btn", disabled: !mayChat(), onclick: async () => {
-            await safe(sendMessage("general", `📋 The briefing for ${fmtDay(S.date, { weekday: "long", day: "numeric", month: "long" })} is up. Read it in the Briefing tab.`), "Posted to #general");
-          } }, "Notify #general")))));
-}
-function flushThen(fn) { fn(); }
 const wc = t => { const n = (t.trim().match(/\S+/g) || []).length; return n + (n === 1 ? " word" : " words"); };
-function updateBrief(initial) {
-  const ta = $("#brief-text"); if (!ta) return;
-  const b = S.briefing;
-  if (initial) briefDirty = false;
-  const focused = document.activeElement === ta;
-  if (!briefDirty && !briefSaving && !(focused && b && b.text === ta.value)) {
+function briefMeta(b) {
+  if (!b || !b.updatedAt) return null;
+  const m = h("span", { class: "muted" }, "Updated " + new Date(b.updatedAt).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }));
+  if (b.updatedBy) m.append(" · ", h("span", { "data-uid": b.updatedBy, "data-fallback": "manager" }));
+  fillPeople(m); return m;
+}
+let paper = null;
+const P = { date: null, dirty: false, timer: null, saving: false };
+function getPaper() {
+  if (paper) return paper;
+  const ta = h("textarea", { id: "brief-text", "aria-label": "Briefing" });
+  const tpl = h("button", { class: "btn ghost", type: "button", id: "bp-tpl" }, "Use template");
+  const notify = h("button", { class: "btn", type: "button", id: "bp-notify" }, "Notify #general");
+  paper = h("div", { class: "paper brief-paper", id: "brief-paper" },
+    h("div", { class: "paper-head" },
+      h("div", null, h("div", { class: "bp-title", id: "bp-title" }), h("div", { id: "bp-meta", class: "muted" })),
+      h("span", { style: "display:flex;gap:10px;align-items:center;flex-wrap:wrap" }, tpl, h("span", { class: "muted", id: "bp-count" }), h("span", { class: "saved", id: "bp-status" }), notify)),
+    ta);
+  ta.addEventListener("input", () => {
+    if (!mayEditSchedule()) return;
+    P.dirty = true; setStatus("Unsaved changes…", true);
+    $("#bp-count").textContent = wc(ta.value); tpl.hidden = !!ta.value.trim();
+    clearTimeout(P.timer); const d = P.date;
+    P.timer = setTimeout(() => saveBrief(d, ta.value), 900);
+  });
+  ta.addEventListener("blur", () => { if (P.timer) { clearTimeout(P.timer); saveBrief(P.date, ta.value); } });
+  tpl.onclick = () => { if (ta.value.trim()) return; ta.value = TEMPLATE; ta.dispatchEvent(new Event("input")); ta.focus(); };
+  notify.onclick = async () => {
+    const d = P.date;
+    if (P.timer) { clearTimeout(P.timer); await saveBrief(d, ta.value); }
+    await safe(sendMessage("general", `📋 The briefing for ${fmtDay(d, { weekday: "long", day: "numeric", month: "long" })} is up. Find it in Schedule under that day.`), "Posted to #general");
+  };
+  return paper;
+}
+function setStatus(t, pending) { const st = $("#bp-status"); if (st) { st.textContent = t; st.className = "saved" + (pending ? " pending" : ""); } }
+async function saveBrief(d, text) {
+  P.timer = null; P.saving = true; setStatus("Saving…", true);
+  const ok = await safe(store.set("briefings/" + d, { date: d, text, updatedBy: S.me.id, updatedAt: Date.now() }));
+  P.saving = false;
+  const ta = $("#brief-text");
+  if (P.date === d && ta && ta.value === text) P.dirty = false;
+  if (P.date === d) setStatus(ok ? "Saved " + new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : "Not saved — check your connection", !ok);
+}
+function updatePaper() {
+  const el = getPaper(), ta = el.querySelector("#brief-text"), ed = mayEditSchedule(), d = S.date, b = S.briefs[d];
+  if (P.date !== d) {
+    if (P.timer) { clearTimeout(P.timer); saveBrief(P.date, ta.value); }
+    P.date = d; P.dirty = false; ta.value = (b && b.text) || ""; setStatus("", false);
+  } else if (!P.dirty && !P.saving && !P.timer) {
     const v = (b && b.text) || "";
     if (ta.value !== v) ta.value = v;
   }
-  $("#brief-count").textContent = wc(ta.value);
-  const tpl = $("#tpl-btn"); if (tpl) tpl.hidden = !!ta.value.trim();
-  const meta = $("#brief-meta"); meta.replaceChildren();
-  if (b && b.updatedAt) {
-    meta.append("Last edited ", new Date(b.updatedAt).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }));
-    if (b.updatedBy) { meta.append(" · "); meta.append(h("span", { "data-uid": b.updatedBy, "data-fallback": "manager" })); fillPeople(meta); }
-  } else meta.textContent = "Not written yet";
-  // on shift today
-  const panel = $("#brief-shifts");
-  const list = S.shifts.filter(s => s.date === S.date).sort((a, b) => mins(a.start) - mins(b.start));
-  const known = staffById();
-  panel.replaceChildren(
-    h("h3", null, "On shift", h("small", null, `${list.length} · ${fmtH(list.reduce((a, s) => a + shiftHours(s), 0))}`)),
-    list.length ? h("ul", { class: "onshift" }, list.map(s => {
-      const p = known[s.staffId];
-      return h("li", { style: `--c:${p ? p.color : "var(--ink-3)"}` }, h("span", { class: "sw" }),
-        h("div", null, h("div", { text: p ? p.name : "Open shift" }), s.position ? h("div", { class: "ps", text: s.position }) : null),
-        h("span", { class: "tm" }, `${s.start}–${s.end}`));
-    })) : h("p", { class: "muted", style: "margin:0" }, "No shifts this day."));
+  ta.readOnly = !ed;
+  ta.placeholder = ed ? "Write this day's briefing: goals, bookings, notices, positions, to-dos…" : "No briefing for this day yet.";
+  el.querySelector("#bp-title").textContent = "Briefing · " + cap(fmtDay(d, { weekday: "long", day: "numeric", month: "long" }));
+  const meta = el.querySelector("#bp-meta"); meta.replaceChildren();
+  if (b && b.updatedAt) { meta.append("Updated " + new Date(b.updatedAt).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })); if (b.updatedBy) { meta.append(" · ", h("span", { "data-uid": b.updatedBy, "data-fallback": "manager" })); fillPeople(meta); } }
+  else meta.textContent = S.mode === "week" && !narrow ? "Click a day in the table to see its briefing" : "Not written yet";
+  el.querySelector("#bp-count").textContent = ed ? wc(ta.value) : "";
+  el.querySelector("#bp-tpl").hidden = !ed || !!ta.value.trim();
+  el.querySelector("#bp-notify").hidden = !ed || !mayChat();
 }
 
 /* ---------- MENSAJES ---------- */
